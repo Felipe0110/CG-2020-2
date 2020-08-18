@@ -1,0 +1,204 @@
+ <!DOCTYPE html>
+<html>
+  <head>
+    <title>Ej: Esfera</title>
+    <style>
+      html, body { margin: 0; padding: 0; overflow: hidden; }
+    </style>
+  </head>
+  <body>
+    <script src="js/three.min.js"></script>
+    <script>
+		var scene, aspect, camera, renderer,controls;
+		var startTime = Date.now();
+        
+        
+		// Creacion de funciones 
+        
+		init();
+		animate();
+	
+		function init(){
+            
+            //Creacion de estructura basica de Three.js
+            scene = new THREE.Scene();
+			aspect = window.innerWidth / window.innerHeight;
+			camera = new THREE.PerspectiveCamera( 45, aspect, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+
+            //controls = new OrbitControls( camera, renderer.domElement );
+             controls = new THREE.OrbitControls(camera,renderer.domElement );
+            //controls.update() must be called after any manual changes to the camera's transform
+            camera.position.z=10;
+            controls.update();
+            
+            
+            
+            //Creacion de cabeza
+            var geoCabeza= new THREE.Geometry();
+            var resCabeza = 100; // controla el numero de lineas que se crean
+            //Se posicionan los puntos en P(x,y,z)
+            for( var i = 0; i < resCabeza; i++){
+                for( var j = 0; j < resCabeza; j++){
+                    var punto = new THREE.Vector3();
+                    punto.x = 2 * Math.cos( ( j * 2 * Math.PI )/resCabeza) * Math.sin( ( i * Math.PI )/resCabeza) ;
+                    punto.y = 2 * Math.sin( ( j * 2 * Math.PI )/resCabeza) * Math.sin( ( i * Math.PI )/resCabeza) ;
+                    punto.z = 2 * Math.cos( ( i * Math.PI )/resCabeza) ;
+                    geoCabeza.vertices.push( punto );
+                }
+            }
+            var matCabeza = new THREE.PointsMaterial( { color: 0x6E6E6E, size: 0.1 } );
+			var Cabeza = new THREE.Points( geoCabeza, matCabeza);
+            
+            
+            //Creacion de los ojos
+            var geoOjos = new THREE.Geometry();
+            var resOjos = 100;
+             for( var i = 0; i < resOjos; i++){
+                for( var j = 0; j < resOjos; j++){
+                    var punto = new THREE.Vector3();
+                    punto.x = 0.3 * Math.cos( ( j * 2 * Math.PI )/resOjos) * Math.sin( ( i * Math.PI )/resOjos) ;
+                    punto.y = 0.3 * Math.sin( ( j * 2 * Math.PI )/resOjos) * Math.sin( ( i * Math.PI )/resOjos) ;
+                    punto.z = 0.3 * Math.cos( ( i * Math.PI )/resOjos) ;
+                    geoOjos.vertices.push( punto );
+                }
+            }
+            var matOjos = new THREE.PointsMaterial( { color:0xFFFFFF, size: 0.1 } );
+            var Ojo_1 = new THREE.Points( geoOjos, matOjos);
+            
+            Ojo_1.position.z = -1.7;
+            Ojo_1.position.y = 0.5;
+            Ojo_1.position.x = 0.7 ;
+            
+            var Ojo_2 =new THREE.Points( geoOjos, matOjos);
+            
+            Ojo_2.position.z = -1.7;
+            Ojo_2.position.y = 0.5;
+            Ojo_2.position.x = -0.7 ;
+            
+            //Pupilas
+            var geoPupilas= new THREE.Geometry();
+            var resPupilas = 100; // controla el numero de lineas que se crean
+            //Se posicionan los puntos en P(x,y,z)
+            for( var i = 0; i < resPupilas; i++){
+                for( var j = 0; j < resPupilas; j++){
+                    var punto = new THREE.Vector3();
+                    punto.x = 0.1 * Math.cos( ( j * 2 * Math.PI )/resPupilas) * Math.sin( ( i * Math.PI )/resPupilas) ;
+                    punto.y = 0.1 * Math.sin( ( j * 2 * Math.PI )/resPupilas) * Math.sin( ( i * Math.PI )/resPupilas) ;
+                    punto.z = 0.1 * Math.cos( ( i * Math.PI )/resCabeza) ;
+                    geoPupilas.vertices.push( punto );
+                }
+            }
+            var matPupilas = new THREE.PointsMaterial( { color:0x01A9DB, size: 0.1 } );
+			var Pupilas_1 = new THREE.Points( geoPupilas, matPupilas);
+            
+            Pupilas_1.position.z = -1.95;
+            Pupilas_1.position.y = 0.5;
+            Pupilas_1.position.x = 0.7 ;
+            
+            var Pupilas_2 = new THREE.Points( geoPupilas, matPupilas);
+            Pupilas_2.position.z = -1.95;
+            Pupilas_2.position.y = 0.5;
+            Pupilas_2.position.x = -0.7 ;
+            
+            
+            
+            //Orejas del elefante
+            var geoOrejas = new THREE.Geometry();
+            var resOrejas = 100;
+             for( var i = 0; i < resOrejas; i++){
+                for( var j = 0; j < resOrejas; j++){
+                    var punto = new THREE.Vector3();
+                    punto.x = i/47 * Math.cos( ( j * 2 * Math.PI )/resOrejas);
+                    punto.y = i/47 * Math.sin( ( j * 2 * Math.PI )/resOrejas) ;
+                    punto.z = i /100 ;
+                    geoOrejas.vertices.push( punto );
+                }
+            }
+            var matOrejas = new THREE.PointsMaterial( { color:0x151515, size: 0.1 } );
+            var Orejas_1 = new THREE.Points( geoOrejas, matOrejas);
+            
+            Orejas_1.rotation.x = -3.3;
+            Orejas_1.position.x = 1.3;
+            Orejas_1.position.z = 0.5 ;
+            
+            var Orejas_2 = new THREE.Points( geoOrejas, matOrejas);
+            
+            Orejas_2.rotation.x = -3.3;
+            Orejas_2.position.x = -1.3;
+            Orejas_2.position.z = 0.5 ;
+            
+            //Cuerpo del elefante
+            var geoCuerpo = new THREE.Geometry();
+            var resCuepo =100;
+              for( var i = 0; i < resCuepo; i++){
+                for( var j = 0; j < resCuepo; j++){
+                    var punto = new THREE.Vector3();
+                    punto.x = 2.5 * Math.cos( ( j * 2 * Math.PI )/resCuepo) ;
+                    punto.y = 2.5 * Math.sin( ( j * 2* Math.PI )/resCuepo)  ;
+                    punto.z = i/17;
+                    geoCuerpo.vertices.push( punto );
+                }
+            }
+            var matCuerpo = new THREE.PointsMaterial({ color: 0x6E6E6E, size: 0.1 });
+            var Cuerpo = new THREE.Points (geoCuerpo,matCuerpo);
+            
+            Cuerpo.position.z = 1;
+            Cuerpo.position.y = -1.9;
+            
+            //Patas
+            var geoTrompa = new THREE.Geometry();
+            var resTrompa  =50;
+              for( var i = 0; i < resTrompa ; i++){
+                for( var j = 0; j < resTrompa ; j++){
+                    var punto = new THREE.Vector3();
+                    punto.x = 0.5 * Math.cos( ( j * 2 * Math.PI )/resTrompa ) ;
+                    punto.y = 0.5 * Math.sin( ( j * 2* Math.PI )/resTrompa )  ;
+                    punto.z = i/20;
+                    geoTrompa .vertices.push( punto );
+                }
+            }
+            var matTrompa  = new THREE.PointsMaterial({ color: 0xA4A4A4, size: 0.1 });
+            var Trompa  = new THREE.Points (geoTrompa ,matTrompa );
+            
+            Trompa.rotation.x= 2;
+            Trompa. position.z = - 1.5 ;
+            
+		  
+			scene.add( Cabeza );
+            scene.add(Ojo_1);
+            scene.add(Ojo_2);
+            scene.add(Pupilas_1);
+            scene.add(Pupilas_2);
+            scene.add(Orejas_1);
+            scene.add(Orejas_2);
+            scene.add(Cuerpo);
+            scene.add(Trompa );
+			/*camera.position.x = 10;
+			camera.position.y = 10;	 
+		  	camera.position.z =  10;*/
+            
+            
+		  	camera.lookAt( origin );
+			}
+    
+    function animate() {
+        render();
+        controls.update();
+        requestAnimationFrame( animate );
+        
+    }
+    
+    function render(){
+        /*var dtime = Date.now()-startTime;
+        camera.position.x = 10*Math.cos(dtime/10000);
+        camera.position.z = 10*Math.sin(dtime/10000);
+        camera.lookAt( 0, 0, 0 );*/
+        
+        renderer.render( scene, camera );
+    }
+    </script>
+  </body>
+</html>

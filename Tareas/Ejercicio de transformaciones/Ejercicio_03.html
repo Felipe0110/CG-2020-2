@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title> origen, escalando y regresando a su posición
+original.</title>
+	<style>
+      html, body { margin: 0; padding: 0; overflow: hidden; }
+      #info {
+          position: absolute;
+          padding: 10px;
+          width: 100%;
+          text-align: center;
+          color: #FFFFFF;
+      }
+	</style>
+</head>
+<body>
+	<div id="info">TRASLACIÓN<br/>
+          <br>Presione W y S: Para mover en x<br/>
+         
+    </div>
+    <script src="js/three.min.js"></script>
+	<script>
+		var scene, aspect, camera, renderer;
+		var Aumentar = false;
+		var Disminuir = false;
+		init();
+		animate();
+		
+		function init(){
+		scene = new THREE.Scene();
+		aspect = window.innerWidth / window.innerHeight;
+		camera = new THREE.PerspectiveCamera( 45, aspect, 0.1, 1000);
+		renderer = new THREE.WebGLRenderer();
+		renderer.setSize( window.innerWidth, window.innerHeight );
+		document.body.appendChild( renderer.domElement );
+			
+		var colorRd = new THREE.Color( 0xAA6666 );
+		var colorGd = new THREE.Color( 0x66AA66 );
+		var colorBd = new THREE.Color( 0x6666AA );
+		
+			var onKeyDown = function ( event ) {
+				switch ( event.keyCode ) {
+						
+					case 87:
+						Aumentar = true;
+						break;
+					case 83:
+						Disminuir = true;
+						break;
+				}
+			};	  
+		  			
+			var onKeyUp = function ( event ) {
+				Aumentar = false;
+				Disminuir = false;
+			};
+			document.addEventListener( 'keydown', onKeyDown, false );
+			document.addEventListener( 'keyup', onKeyUp, false );
+			
+			var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+			for ( var i = 0; i < geometry.faces.length; i ++ ) {
+				switch(i){
+					case 0: case 1: geometry.faces[ i ].color = colorRd; break;
+					case 2: case 3: geometry.faces[ i ].color = colorRd; break;
+					case 4: case 5: geometry.faces[ i ].color = colorGd; break;
+					case 6: case 7: geometry.faces[ i ].color = colorGd; break;
+					case 8: case 9: geometry.faces[ i ].color = colorBd; break;
+					case 10: case 11: geometry.faces[ i ].color = colorBd; break;
+					case 10: case 11: geometry.faces[ i ].color = colorBd; break;
+				}				
+			}
+            var material = new THREE.MeshBasicMaterial( { color: 0xFFFFFF, vertexColors: THREE.FaceColors } );
+			cube  = new THREE.Mesh( geometry, material );
+			
+			cube.position.x = 2 ;
+			cube.position.y = 3;
+			
+			scene.add(cube);
+			camera.position.x = 10;
+			camera.position.y = 10;	 
+		  	camera.position.z =  10;
+				
+		}
+		
+		function animate(){
+		render();
+        requestAnimationFrame( animate );	
+		}
+		
+		function render(){
+		var s=1;
+		var tx=cube.position.x, ty=cube.position.y, tz=cube.position.z;
+		if(Aumentar){
+				s+=0.1;		
+			}
+			if(Disminuir){
+				s+=-0.1;
+			}
+			
+		var MatrizS = new THREE.Matrix4();	
+		MatrizS.set( 	s, 0, 0, tx*(1-s),
+				0, s, 0, ty*(1-s), 
+				0, 0, s, tz*(1-s),
+				0, 0, 0,  1);
+
+		cube.applyMatrix(MatrizS);							
+		cube.elementsNeedUpdate = true;	
+        console.log(cube.position);
+		camera.lookAt( 0, 0, 0 );
+		renderer.render( scene, camera );
+		}
+	</script>
+</body>
+</html>
