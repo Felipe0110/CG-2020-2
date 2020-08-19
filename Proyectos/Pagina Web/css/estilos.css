@@ -43,7 +43,7 @@ h1,h2,h3,h4,h5 {
 .nav{
     position: absolute;
     top:60px;
-    left:-100%;
+    left:0;
     width: 100%;
 	transition: all 0.4s;
     
