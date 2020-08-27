@@ -28,12 +28,7 @@
 			renderer.setSize( window.innerWidth, window.innerHeight );
 			document.body.appendChild( renderer.domElement );
 
-            //controls = new OrbitControls( camera, renderer.domElement );
-             controls = new THREE.OrbitControls(camera,renderer.domElement );
-            //controls.update() must be called after any manual changes to the camera's transform
-            camera.position.z=10;
-            controls.update();
-            
+             
             
             
             //Creacion de cabeza
@@ -186,16 +181,16 @@
     
     function animate() {
         render();
-        controls.update();
+        
         requestAnimationFrame( animate );
         
     }
     
     function render(){
-        /*var dtime = Date.now()-startTime;
+        var dtime = Date.now()-startTime;
         camera.position.x = 10*Math.cos(dtime/10000);
         camera.position.z = 10*Math.sin(dtime/10000);
-        camera.lookAt( 0, 0, 0 );*/
+        camera.lookAt( 0, 0, 0 );
         
         renderer.render( scene, camera );
     }
