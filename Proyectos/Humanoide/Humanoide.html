@@ -18,29 +18,30 @@
         </div>
     <script src="js/three.min.js"></script>
     <script src='js/libs/dat.gui.min.js'></script>
+    <script src="js/controls/OrbitControls.js"></script>
+    <script src="js/Figuras.js"></script>
     <script>
 		var scene, aspect, camera, renderer,controls;
-		var startTime = Date.now();
-		/*var angleX = 0;
-        var angleY = 0;
-       	var angleZ = 0;*/
-		//var c,s,tx=0,ty=0,tz=0;
+		
+		var AnguloC = 0,AnguloT = 0 ,AnguloCab = 0,AnguloH_D =0 ,AnguloH_I = 0,AnguloA_D = 0,AnguloA_I = 0,AnguloN_D = 0,AnguloN_I = 0,AnguloR_I = 0, AnguloR_D = 0;
+		var origenC,origenT,origenCab,origenB_I,origenB_D,origenA_D,origenA_I,origenN_D,origenN_I,origenR_D,rigenR_I,origenC_D,origenC_I;
+		
         var Cabeza,Torso, BrazoIzq,BrazoDer,HombroIzq,HombroDer,GluteoIzq,GluteoDer,PiernaIzq,PiernaDer,RodillaIzq,RodillaDer,CanillaIzq,CanillaDer,CodoIzq,CodoDer,AnteIzq,AnteDer, Cadera;
-        var roty;
-		// Creacion de funciones 
+		var c,s,tx,ty,tz;
         
 		init();
 		animate();
 	
 		function init(){
-            
             //Creacion de estructura basica de Three.js
             scene = new THREE.Scene();
 			aspect = window.innerWidth / window.innerHeight;
 			camera = new THREE.PerspectiveCamera( 45, aspect, 0.1, 1000);
             renderer = new THREE.WebGLRenderer();
 			renderer.setSize( window.innerWidth, window.innerHeight );
+			
 			document.body.appendChild( renderer.domElement );
+			controls = new THREE.OrbitControls(camera, renderer.domElement);
 			
 			var x = new THREE.Vector3( 1, 0, 0 );
 			var y = new THREE.Vector3( 0, 1, 0 );
@@ -49,326 +50,219 @@
 
             var ejeX = new THREE.ArrowHelper( x, origin, 1, 0xFF1400 );
             var ejeY = new THREE.ArrowHelper( y, origin, 1, 0x7DFF00 );
-            var ejeZ = new THREE.ArrowHelper( z, origin, 1, 0x0027FF );
-			
-			var onKeyDown = function ( event ) {
-				switch ( event.keyCode ) {
-					case 38:
-						roty = true;
-						break;
-							
-				}
-			};	  
-		  			
-			var onKeyUp = function ( event ) {
-				roty = false;
-				
-			};
-			
-			document.addEventListener( 'keydown', onKeyDown, false );
-			document.addEventListener( 'keyup', onKeyUp, false );
-			
+            var ejeZ = new THREE.ArrowHelper( z, origin, 1, 0x0027FF );           
             
-            
-            //Creacion de cabeza
-            var geoEsfera= new THREE.Geometry();
-            var resEsfera = 100; 
-            for( var i = 0; i < resEsfera; i+=0.5){
-                for( var j = 0; j < resEsfera; j+=0.5){
-                    var punto = new THREE.Vector3();
-                    punto.x = 1 * Math.cos( ( j * 2 * Math.PI )/resEsfera) * Math.sin( ( i * Math.PI )/resEsfera) ;
-                    punto.y = 1 * Math.sin( ( j * 2 * Math.PI )/resEsfera) * Math.sin( ( i * Math.PI )/resEsfera) ;
-                    punto.z = 1 * Math.cos( ( i * Math.PI )/resEsfera) ;
-                    geoEsfera.vertices.push( punto );
-                }
-            }
-            var matEsfera = new THREE.PointsMaterial( { color: 0x6E6E6E, size: 0.1 } );
-			Cabeza = new THREE.Points( geoEsfera, matEsfera);
-            Cabeza.applyMatrix( new THREE.Matrix4().makeTranslation(1,5.2,1.5) );        
-            
+			var matCuerpo = new THREE.PointsMaterial( { color: 0xFFFFFF, size: 0.1 } );
+			origenC = new THREE.Points(esfera(0.1), matCuerpo);
+			Cadera = new THREE.Points(cubo(7,2,7), matCuerpo);
+			Cadera.applyMatrix(new THREE.Matrix4().makeTranslation(-3,0,-3));
 			
-            //Torso
-			var geoTorso= new THREE.Geometry();
-            var resTorso = 2; // controla el numero de lineas que se crean
-            //Se posicionan los puntos en P(x,y,z)
-            for( var i = 0; i < 3; i+=0.06){
-                for( var j = 0; j < 4; j+=0.06){
-					for(var k=0;k<2;k+=0.06){
-                    var punto = new THREE.Vector3();
-                     punto.x =   k;
-                     punto.y =   j;
-                     punto.z =   i;
-                     geoTorso.vertices.push( punto );
-					}
-                }
-            }
-            var matTorso= new THREE.PointsMaterial( { color: 0x60000FF, size: 0.1 } );
-			Torso = new THREE.Points( geoTorso, matTorso);
-            Torso.applyMatrix( new THREE.Matrix4().makeTranslation(0.5,1,0));
+			origenT = new THREE.Points(esfera(0.1), matCuerpo);
+			origenT.applyMatrix(new THREE.Matrix4().makeTranslation(3,1,3));
+			Torso = new THREE.Points(cubo(7,7,4),matCuerpo);
+			Torso.applyMatrix(new THREE.Matrix4().makeTranslation(-1.5,0,-3));
 			
+			origenCab = new THREE.Points(esfera(0.1), matCuerpo);
+			origenCab.applyMatrix(new THREE.Matrix4().makeTranslation(1.5,8,3));
 			
-			//Cadera
-			var geoCadera= new THREE.Geometry();
-            var resCadera = 2; // controla el numero de lineas que se crean
-            //Se posicionan los puntos en P(x,y,z)
-            for( var i = 0; i < 3; i+=0.06){
-                for( var j = 0; j < 1; j+=0.06){
-					for(var k=0;k<3;k+=0.06){
-                    var punto = new THREE.Vector3();
-                     punto.x =   k;
-                     punto.y =   j;
-                     punto.z =   i;
-                     geoCadera.vertices.push( punto );
-					}
-                }
-            }
-            var matCadera= new THREE.PointsMaterial( { color: 0x00FBFF, size: 0.1 } );
-			Cadera = new THREE.Points( geoCadera, matCadera);
-			//Cadera.applyMatrix( new THREE.Matrix4().makeTranslation(0,0,0) );					 
-			//Hombros
-			var geoHombro= new THREE.Geometry();
-            var resHombro = 100; 
-            for( var i = 0; i < resHombro; i+=0.5){
-                for( var j = 0; j < resHombro; j+=0.5){
-                    var punto = new THREE.Vector3();
-                    punto.x = 0.5 * Math.cos( ( j * 2 * Math.PI )/resHombro) * Math.sin( ( i * Math.PI )/resHombro) ;
-                    punto.y = 0.5 * Math.sin( ( j * 2 * Math.PI )/resHombro) * Math.sin( ( i * Math.PI )/resHombro) ;
-                    punto.z = 0.5 * Math.cos( ( i * Math.PI )/resHombro) ;
-                    geoHombro.vertices.push( punto );
-                }
-            }
-            var matHombro = new THREE.PointsMaterial( { color: 0x8E00FF, size: 0.1 } );
+			Cabeza = new THREE.Points(esfera(2), matCuerpo);
+			Cabeza.applyMatrix(new THREE.Matrix4().makeTranslation(0,0,0));
 			
-			HombroIzq = new THREE.Points( geoHombro, matHombro);
-			HombroIzq.applyMatrix( new THREE.Matrix4().makeTranslation(1,4,-0.5) );
-			HombroDer = new THREE.Points( geoHombro, matHombro);
-			HombroDer.applyMatrix( new THREE.Matrix4().makeTranslation(1,4,3.5) );
+			origenB_D = new THREE.Points(esfera(0.1), matCuerpo);
+			origenB_D.applyMatrix(new THREE.Matrix4().makeTranslation(1.5,6,6.5));
+			HombroDer = new THREE.Points(esfera(0.5), matCuerpo);
+			HombroDer.applyMatrix(new THREE.Matrix4().makeTranslation(0,0,0));
+			BrazoDer = new THREE.Points(cilindro(0.5,3), matCuerpo);
+			BrazoDer.applyMatrix(new THREE.Matrix4().makeTranslation(0,-3,0));
 			
-			RodillaIzq = new THREE.Points( geoHombro, matHombro);
-			RodillaIzq.applyMatrix( new THREE.Matrix4().makeTranslation(0,0,0) );
+			origenB_I = new THREE.Points(esfera(0.1), matCuerpo);
+			origenB_I.applyMatrix(new THREE.Matrix4().makeTranslation(1.5,6,-0.5));
+			HombroIzq = new THREE.Points(esfera(0.5), matCuerpo);
+			HombroIzq.applyMatrix(new THREE.Matrix4().makeTranslation(0,0,0));
+			BrazoIzq = new THREE.Points(cilindro(0.5,3), matCuerpo);
+			BrazoIzq.applyMatrix(new THREE.Matrix4().makeTranslation(0,-3,0));
 			
-			RodillaDer = new THREE.Points( geoHombro, matHombro);
-			RodillaDer.applyMatrix( new THREE.Matrix4().makeTranslation(0,0,0) );
+			origenA_D = new THREE.Points(esfera(0.1), matCuerpo);
+			origenA_D.applyMatrix(new THREE.Matrix4().makeTranslation(0,0,0));
+			CodoDer= new THREE.Points(esfera(0.5), matCuerpo);
+			CodoDer.applyMatrix(new THREE.Matrix4().makeTranslation(0,0,0));
+			AnteDer= new THREE.Points(cilindro(0.5,3), matCuerpo);
+			AnteDer.applyMatrix(new THREE.Matrix4().makeTranslation(0,-3,0));
+			
+			origenA_I = new THREE.Points(esfera(0.1), matCuerpo);
+			origenA_I.applyMatrix(new THREE.Matrix4().makeTranslation(0,0,0));
+			CodoIzq= new THREE.Points(esfera(0.5), matCuerpo);
+			CodoIzq.applyMatrix(new THREE.Matrix4().makeTranslation(0,0,0));
+			AnteIzq= new THREE.Points(cilindro(0.5,3), matCuerpo);
+			AnteIzq.applyMatrix(new THREE.Matrix4().makeTranslation(0,-3,0));
+			
+			origenN_D = new THREE.Points(esfera(0.1), matCuerpo);
+			origenN_D.applyMatrix(new THREE.Matrix4().makeTranslation(3,-1,1.5));
+			GluteoDer= new THREE.Points(esfera(1), matCuerpo);
+			GluteoDer.applyMatrix(new THREE.Matrix4().makeTranslation(0,0,0));
+			PiernaDer= new THREE.Points(cilindro(0.5,2), matCuerpo);
+			PiernaDer.applyMatrix(new THREE.Matrix4().makeTranslation(0,-4,0));
+			
+			origenN_I= new THREE.Points(esfera(0.1), matCuerpo);
+			origenN_I.applyMatrix(new THREE.Matrix4().makeTranslation(3,-1,4.5));
+			GluteoIzq = new THREE.Points(esfera(1), matCuerpo);
+			GluteoIzq.applyMatrix(new THREE.Matrix4().makeTranslation(0,0,0));
+			PiernaIzq= new THREE.Points(cilindro(0.5,2), matCuerpo);
+			PiernaIzq.applyMatrix(new THREE.Matrix4().makeTranslation(0,-4,0));
+			
+			origenC_D = new THREE.Points(esfera(0.1), matCuerpo);
+			origenC_D.applyMatrix(new THREE.Matrix4().makeTranslation(0,0,0));
+			RodillaDer= new THREE.Points(esfera(1), matCuerpo);
+			RodillaDer.applyMatrix(new THREE.Matrix4().makeTranslation(0,0,0));
+			CanillaDer= new THREE.Points(cilindro(0.5,2), matCuerpo);
+			CanillaDer.applyMatrix(new THREE.Matrix4().makeTranslation(0,-4,0));
 			
 			
-			var geoCodo= new THREE.Geometry();
-            var resCodo = 100; 
-            for( var i = 0; i < resCodo; i+=0.5){
-                for( var j = 0; j < resCodo; j+=0.5){
-                    var punto = new THREE.Vector3();
-                    punto.x = 0.3* Math.cos( ( j * 2 * Math.PI )/resCodo) * Math.sin( ( i * Math.PI )/resCodo) ;
-                    punto.y = 0.3* Math.sin( ( j * 2 * Math.PI )/resCodo) * Math.sin( ( i * Math.PI )/resCodo) ;
-                    punto.z = 0.3* Math.cos( ( i * Math.PI )/resCodo) ;
-                    geoCodo.vertices.push( punto );
-                }
-            }
-            var matCodo = new THREE.PointsMaterial( { color: 0xFFF800, size: 0.1 } );
+			origenC_I = new THREE.Points(esfera(0.1), matCuerpo);
+			origenC_I.applyMatrix(new THREE.Matrix4().makeTranslation(0,0,0));
+			RodillaIzq= new THREE.Points(esfera(1), matCuerpo);
+			RodillaIzq.applyMatrix(new THREE.Matrix4().makeTranslation(0,0,0));
+			CanillaIzq= new THREE.Points(cilindro(0.5,2), matCuerpo);
+			CanillaIzq.applyMatrix(new THREE.Matrix4().makeTranslation(0,-4,0));
 			
-			CodoIzq = new THREE.Points( geoCodo, matCodo);
-			CodoIzq.applyMatrix( new THREE.Matrix4().makeTranslation(0,0,0) );
-			CodoDer = new THREE.Points( geoCodo, matCodo);
-			CodoDer.applyMatrix( new THREE.Matrix4().makeTranslation(0,0,0 ))
+			origenC.add(Cadera);
+			Cadera.add(origenT);
+			origenT.add(Torso);
+			Torso.add(origenCab);
+			origenCab.add(Cabeza);
 			
-			
-			
-			var geoGluteo= new THREE.Geometry();
-            var resGluteo = 100; 
-            for( var i = 0; i < resGluteo; i+=0.5){
-                for( var j = 0; j < resGluteo; j+=0.5){
-                    var punto = new THREE.Vector3();
-                    punto.x = 0.6 * Math.cos( ( j * 2 * Math.PI )/resGluteo) * Math.sin( ( i * Math.PI )/resGluteo) ;
-                    punto.y = 0.6 * Math.sin( ( j * 2 * Math.PI )/resGluteo) * Math.sin( ( i * Math.PI )/resGluteo) ;
-                    punto.z = 0.6 * Math.cos( ( i * Math.PI )/resGluteo) ;
-                    geoGluteo.vertices.push( punto );
-                }
-            }
-            var matGluteo = new THREE.PointsMaterial( { color: 0x00FF07, size: 0.1 } );
-			
-			
-			GluteoIzq = new THREE.Points( geoGluteo, matGluteo);
-			GluteoIzq.applyMatrix( new THREE.Matrix4().makeTranslation(1.5,-0.5,2.25) );
-			GluteoDer = new THREE.Points( geoGluteo, matGluteo);
-			GluteoDer.applyMatrix( new THREE.Matrix4().makeTranslation(1.5,-0.5,0.75) );
-			
-			
-			
-            //Extremidades
-			 //Brazos
-            var geoBrazos = new THREE.Geometry();
-            var resBrazos  =50;
-              for( var i = 0; i < resBrazos ; i++){
-                for( var j = 0; j < resBrazos ; j++){
-                    var punto = new THREE.Vector3();
-                    punto.x = 0.2 * Math.cos( ( j * 2 * Math.PI )/resBrazos ) ;
-                    punto.y = i/25;
-                    punto.z = 0.2 * Math.sin( ( j * 2* Math.PI )/resBrazos);
-                    geoBrazos .vertices.push( punto );
-                }
-            }
-            var matBrazos  = new THREE.PointsMaterial({ color: 0xFF0064, size: 0.1 });
-            BrazoIzq  = new THREE.Points (geoBrazos ,matBrazos );
-            BrazoIzq.applyMatrix( new THREE.Matrix4().makeTranslation(0,-2,0) );
-           	BrazoDer =  new THREE.Points (geoBrazos ,matBrazos );
-			BrazoDer.applyMatrix( new THREE.Matrix4().makeTranslation(0,-2,0) );
-			
-			AnteIzq  = new THREE.Points (geoBrazos ,matBrazos );
-            AnteIzq.applyMatrix( new THREE.Matrix4().makeTranslation(0,-2,0) );
-           	AnteDer =  new THREE.Points (geoBrazos ,matBrazos );
-			AnteDer.applyMatrix( new THREE.Matrix4().makeTranslation(0,-2,0) );
-			
-			//Piernas
-			
-			var geoPiernas = new THREE.Geometry();
-            var resPiernas  =50;
-              for( var i = 0; i < resPiernas ; i++){
-                for( var j = 0; j < resPiernas ; j++){
-                    var punto = new THREE.Vector3();
-                    punto.x = 0.35 * Math.cos( ( j * 2 * Math.PI )/resPiernas ) ;
-                    punto.y = i/15;
-                    punto.z = 0.35 * Math.sin( ( j * 2* Math.PI )/resPiernas);
-                    geoPiernas .vertices.push( punto );
-                }
-            }
-       		var matPiernas  = new THREE.PointsMaterial({ color: 0xFF0064, size: 0.1 });	
-			PiernaIzq = new THREE.Points (geoPiernas ,matPiernas);
-			PiernaIzq.applyMatrix( new THREE.Matrix4().makeTranslation(0,-3,0) );
-			PiernaDer = new THREE.Points (geoPiernas,matPiernas );
-			PiernaDer.applyMatrix( new THREE.Matrix4().makeTranslation(0,-3,0) );
-		
-			var geoCanilla = new THREE.Geometry();
-            var resCanilla  =50;
-              for( var i = 0; i < resCanilla ; i++){
-                for( var j = 0; j < resCanilla ; j++){
-                    var punto = new THREE.Vector3();
-                    punto.x = 0.3 * Math.cos( ( j * 2 * Math.PI )/resCanilla ) ;
-                    punto.y = i/15;
-                    punto.z = 0.3 * Math.sin( ( j * 2* Math.PI )/resCanilla);
-                    geoCanilla .vertices.push( punto );
-                }
-            }
-       		var matCanilla = new THREE.PointsMaterial({ color: 0xFF0064, size: 0.1 });	
-			
-			CanillaIzq = new THREE.Points (geoCanilla ,matCanilla);
-			CanillaIzq.applyMatrix( new THREE.Matrix4().makeTranslation(0,-2,0) );
-			CanillaDer = new THREE.Points (geoCanilla,matCanilla );
-			CanillaDer.applyMatrix( new THREE.Matrix4().makeTranslation(0,-2,0) );
-			elex= new THREE.Points (geoCanilla ,matCanilla);
-			
-			
-			//Jerarquias
-			Cadera.add(Torso);
-			Torso.add(elex);
-			Torso.add(Cabeza);
-			Torso.add(HombroIzq);
-			Torso.add(HombroDer);
-			HombroIzq.add(BrazoIzq);
+			Torso.add(origenB_D);
+			origenB_D.add(HombroDer);
 			HombroDer.add(BrazoDer);
-			BrazoIzq.add(CodoIzq);
-			BrazoDer.add(CodoDer);
-			CodoIzq.add(AnteIzq);
+			BrazoDer.add(origenA_D),
+			origenA_D.add(CodoDer);
 			CodoDer.add(AnteDer);
-			Cadera.add(GluteoIzq);
-			Cadera.add(GluteoDer);
-			GluteoIzq.add(PiernaIzq);
+			
+			Torso.add(origenB_I);
+			origenB_I.add(HombroIzq);
+			HombroIzq.add(BrazoIzq);
+			BrazoIzq.add(origenA_I);
+			origenA_I.add(CodoIzq);
+			CodoIzq.add(AnteIzq);
+			
+			Cadera.add(origenN_D);
+			origenN_D.add(GluteoDer);
 			GluteoDer.add(PiernaDer);
-			PiernaIzq.add(RodillaIzq);
-			PiernaDer.add(RodillaDer);
-			RodillaIzq.add(CanillaIzq);
+			PiernaDer.add(origenC_D);
+			origenC_D.add(RodillaDer);
 			RodillaDer.add(CanillaDer);
+		
+			Cadera.add(origenN_I);
+			origenN_I.add(GluteoIzq);
+			GluteoIzq.add(PiernaIzq);
+			PiernaIzq.add(origenC_I),
+			origenC_I.add(RodillaIzq);
+			RodillaIzq.add(CanillaIzq);
 			
-			/*pivotPoint = new THREE.Object3D();
-			pivotPoint.position.set(1,1,1);
-			scene.add( pivotPoint );
 			
-			pivotPoint.add(Cadera);
-			Cadera.position.set(1,-1,1);*/
-			
-            scene.add(Cadera);
+			scene.add(origenC);
 			scene.add(ejeX);
 			scene.add(ejeY);
 			scene.add(ejeZ);
-			camera.position.x = 0;
-			camera.position.y =	17;	 
-		  	camera.position.z = 0;
 			
-			 /*var rotationAngles = {
-                    theta1: 0,
-                   
+			 var rotationAngles = {
+                    Cadera: 0,
+                    Torso: 0,
+				 	Cabeza:0,
+                   	Brazo_derecho: 0,
+					Antebrazo_derecho: 0,
+				 	Brazo_izquierdo:0,
+				 	Antebrazo_izquierdo:0,
+				 	Gluteo_derecho:0,
+				 	Glueto_izquierda:0,
+				 	Rodilla_derecho: 0,
+				 	Rodilla_izquierda:0
                 };
 
                 var rotation = function () {
-                    angleY = THREE.Math.degToRad(rotationAngles.theta1);
-                    
-                    render();
+                    AnguloC = THREE.Math.degToRad(rotationAngles.Cadera);
+                    AnguloT = THREE.Math.degToRad(rotationAngles.Torso);
+					AnguloCab = THREE.Math.degToRad(rotationAngles.Cabeza);
+                   	AnguloH_D = THREE.Math.degToRad(rotationAngles.Brazo_derecho);
+					AnguloA_D = THREE.Math.degToRad(rotationAngles.Antebrazo_derecho);
+					AnguloH_I = THREE.Math.degToRad(rotationAngles.Brazo_izquierdo);
+					AnguloA_I = THREE.Math.degToRad(rotationAngles.Antebrazo_izquierdo);
+					AnguloN_D = THREE.Math.degToRad(rotationAngles.Glueto_izquierda);
+					AnguloN_I = THREE.Math.degToRad(rotationAngles.Gluteo_derecho);
+					AnguloR_D = THREE.Math.degToRad(rotationAngles.Rodilla_izquierda);
+					AnguloR_I = THREE.Math.degToRad(rotationAngles.Rodilla_derecho);
                 };
-
+				
                 var gui = new dat.GUI();
-                gui.add(rotationAngles, "theta1", -90, 90, 1).onChange(rotation);
-                
-                rotation();*/
-            
-            
-		  	camera.lookAt( origin );
+				var folder = gui.addFolder("Humanoide");
+				var brazos = gui.addFolder("Brazos");
+				var piernas = gui.addFolder("Piernas");
+                folder.add(rotationAngles, "Cadera", -90, 90, .1).onChange(rotation);
+                folder.add(rotationAngles, "Torso", -10, 10, 1).onChange(rotation);
+			 	folder.add(rotationAngles, "Cabeza", -10, 10, 1).onChange(rotation);
+                brazos.add(rotationAngles, "Brazo_derecho", -20, 180, 1).onChange(rotation);
+				brazos.add(rotationAngles, "Antebrazo_derecho", 0, 50, 1).onChange(rotation);
+				brazos.add(rotationAngles, "Brazo_izquierdo", -20, 180, 1).onChange(rotation);
+				brazos.add(rotationAngles, "Antebrazo_izquierdo", 0, 50, 1).onChange(rotation);
+				piernas.add(rotationAngles, "Gluteo_derecho", -20, 50, 1).onChange(rotation);
+				piernas.add(rotationAngles, "Rodilla_derecho", -50, 0, 1).onChange(rotation);
+				piernas.add(rotationAngles, "Glueto_izquierda", -20, 50, 1).onChange(rotation);
+				piernas.add(rotationAngles, "Rodilla_izquierda", -50, 0, 1).onChange(rotation);
+                rotation();
+			
+				
+			camera.position.x = 15;
+			camera.position.y =	0;	 
+		  	camera.position.z = 15;
+		  	camera.lookAt( origin );	
 		}
+		
     
     function animate() {
         render();
         requestAnimationFrame( animate );
-        
     }
     
     function render(){
-	
 		
-		var c = Math.cos(0.01);
-		var s = Math.sin(0.01);
-		var tx = 0;
-		var ty = 0;
-		var tz = 0;
+		var RotacionCadera = new THREE.Euler(0, AnguloC, 0, 'XYZ');
+		origenC.setRotationFromEuler(RotacionCadera);
 		
+		var RotacionTorso = new  THREE.Euler(0, AnguloT, 0, 'XYZ');
+		origenT.setRotationFromEuler(RotacionTorso);
 		
-		var rotar = new THREE.Matrix4();
-		rotar.set(c,0,s,tx*(1-c)-s*tz,
-				  0,1,0,0,
-				  -s,0,c,s*tx-c*tz,
-				  0,0,0,1);
-		Cadera.applyMatrix(rotar);							
-		Cadera.elementsNeedUpdate = true;	
+		var RotacionCabeza = new  THREE.Euler(0, AnguloCab, 0, 'XYZ');
+		origenCab.setRotationFromEuler( RotacionCabeza);
 		
-
+		var RotacionHombreDereho = new THREE.Euler(0, 0, AnguloH_D, 'XYZ');
+		origenB_D.setRotationFromEuler(RotacionHombreDereho);
 		
+		var RotacionAntebrazoDerecho = new THREE.Euler(0, 0, AnguloA_D, 'XYZ');
+		origenA_D.setRotationFromEuler(RotacionAntebrazoDerecho);
 		
-
+		var RotacionHombreIzquierdo = new THREE.Euler(0, 0, AnguloH_I, 'XYZ');
+		origenB_I.setRotationFromEuler(RotacionHombreIzquierdo);
 		
+		var RotacionAntebrazoIzquierdo = new THREE.Euler(0, 0, AnguloA_I, 'XYZ');
+		origenA_I.setRotationFromEuler(RotacionAntebrazoIzquierdo);
 		
-		/*var t = new THREE.Matrix4();
-		t.set( 	1, 0, 0, tx,
-				0, 1, 0, ty, 
-				0, 0, 1, tz,
-				0, 0, 0, 1	);
-		var r = new THREE.Matrix4();
-		r.set( 	   c,  0, s, 0,
-					0,  1,  0, 0, 
-				  -s,  0, c, 0,
-					0,  0,  0, 1);	
-		var tempMatrix = new THREE.Matrix4();
+		var RotacionGluteoDerecho = new THREE.Euler(0, 0, AnguloN_D, 'XYZ');
+		origenN_D.setRotationFromEuler(RotacionGluteoDerecho);
 		
-		var tempMatrix = new THREE.Matrix4();
-		tempMatrix.copyPosition( Torso.matrix );
-		Torso.applyMatrix( new THREE.Matrix4().getInverse(tempMatrix) );
-		Torso.applyMatrix(rotar);
-		Torso.applyMatrix( tempMatrix );
-		*/
+		var RotacionGluteoIzquierdo = new THREE.Euler(0, 0, AnguloN_I, 'XYZ');
+		origenN_I.setRotationFromEuler(RotacionGluteoIzquierdo);
 		
-		//var eulerRot = new THREE.Euler(angleX, angleY, angleZ, 'ZYX');
-
-        //Torso.setRotationFromEuler(eulerRot);
-        
-        camera.lookAt( 0, 0, 0 );
-        
+		var RotacionRodillaDerecha = new THREE.Euler(0, 0, AnguloR_D, 'XYZ');
+		origenC_D.setRotationFromEuler(RotacionRodillaDerecha);
+		
+		var RotacionRodillaIzquierda = new THREE.Euler(0, 0, AnguloR_I, 'XYZ');
+		origenC_I.setRotationFromEuler(RotacionRodillaIzquierda);
+		
+		camera.lookAt(0, 0, 0);
         renderer.render( scene, camera );
-    }
 		
+    }
+	
 	
     </script>
   </body>
