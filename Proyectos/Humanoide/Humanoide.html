@@ -28,7 +28,10 @@
 		
         var Cabeza,Torso, BrazoIzq,BrazoDer,HombroIzq,HombroDer,GluteoIzq,GluteoDer,PiernaIzq,PiernaDer,RodillaIzq,RodillaDer,CanillaIzq,CanillaDer,CodoIzq,CodoDer,AnteIzq,AnteDer, Cadera;
 		var c,s,tx,ty,tz;
-        
+		
+        var upArrow = false;
+		var downArrow = false;
+		
 		init();
 		animate();
 	
@@ -42,6 +45,33 @@
 			
 			document.body.appendChild( renderer.domElement );
 			controls = new THREE.OrbitControls(camera, renderer.domElement);
+			
+			var onKeyDown = function ( event ) {
+				switch ( event.keyCode ) {
+					case 87: // TRASLADAR ADELANTE
+						upArrow = true;
+						break;
+					case 83: // TRASLADAR ATRÁS
+						downArrow = true;
+						break;
+					
+					
+				}
+			};	  
+		  			
+			var onKeyUp = function ( event ) {
+				switch ( event.keyCode ) {
+					case 87: // TRASLADAR
+						upArrow = false;
+						break;
+					case 83: // TRASLADAR
+						downArrow = false;
+						break;
+				}
+			};	  	
+			
+			document.addEventListener( 'keydown', onKeyDown, false );
+			document.addEventListener( 'keyup', onKeyUp, false );
 			
 			var x = new THREE.Vector3( 1, 0, 0 );
 			var y = new THREE.Vector3( 0, 1, 0 );
@@ -224,7 +254,24 @@
     }
     
     function render(){
+		/*var tx=0,ty=0,tz=0;
+		if(upArrow) {
+			tx=0; ty=0; tz+=.1;
+			
+		}
+		if(downArrow) {
+			tx=0; ty=0; tz+=-.1;
+			
+		}
 		
+		var t = new THREE.Matrix4();
+		t.set( 	1, 0, 0, tx,
+				0, 1, 0, ty, 
+				0, 0, 1, tz,
+				0, 0, 0, 1	);
+		
+		origenC.matrix.multiply(t); 	//APLICAR LA TRASLACIÓN A NIVEL LOCAL*/
+
 		var RotacionCadera = new THREE.Euler(0, AnguloC, 0, 'XYZ');
 		origenC.setRotationFromEuler(RotacionCadera);
 		
