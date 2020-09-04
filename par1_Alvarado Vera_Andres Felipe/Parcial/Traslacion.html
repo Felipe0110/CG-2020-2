@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>TRASLACION</title>
+      <style>
+            html, body { margin: 0; padding: 0; overflow: hidden; }
+            #info {
+                position: absolute;
+                padding: 10px;
+                width: 100%;
+                text-align: center;
+                color: #FFFFFF;
+            }
+        </style>
+  </head>
+  <body>
+   <div id="info">Traslacion<br/>
+        Transformar con la tecla T.<br/>
+        </div>
+    <script src="js/three.min.js"></script>
+    <script src='js/libs/dat.gui.min.js'></script>
+    <script src="js/controls/OrbitControls.js"></script>
+    <script src="js/Figuras.js"></script>
+    <script>
+		var scene, aspect, camera, renderer,controls;
+		var cubo;
+		var P_1,P_2,P_3,P_4;
+		var P_11,P_21,P_31,P_41;
+		
+		
+ 		init();
+		animate();
+	
+		function init(){
+            //Creacion de estructura basica de Three.js
+            scene = new THREE.Scene();
+			aspect = window.innerWidth / window.innerHeight;
+			camera = new THREE.PerspectiveCamera( 45, aspect, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			
+			document.body.appendChild( renderer.domElement );
+			controls = new THREE.OrbitControls(camera, renderer.domElement);
+			
+			
+			var x = new THREE.Vector3( 1, 0, 0 );
+			var y = new THREE.Vector3( 0, 1, 0 );
+		  	var z = new THREE.Vector3( 0, 0, 1 );
+			var origin = new THREE.Vector3( 0, 0, 0 );
+
+            var ejeX = new THREE.ArrowHelper( x, origin, 1, 0xFF1400 );
+            var ejeY = new THREE.ArrowHelper( y, origin, 1, 0x7DFF00 );
+            var ejeZ = new THREE.ArrowHelper( z, origin, 1, 0x0027FF );           
+            
+			var geoCubo = new THREE.Geometry();
+            
+            for( var i = 0; i < 3; i++){
+                for( var j = 0; j < 3; j++){
+					for(var k=0;k<1;k++){
+                    var punto = new THREE.Vector3();
+                     punto.x =   i;
+                     punto.y =   j;
+                     punto.z =   k;
+                     geoCubo.vertices.push( punto );
+					}
+                }
+            }
+			var matCubo= new THREE.PointsMaterial( { color: 0xFFFFFF, size: 0.1 } );	
+			cubo = new THREE.Points(geoCubo, matCubo);
+			
+			
+			var GeoPunto = new THREE.Geometry();
+			var Vector = new THREE.Vector3(0,0,0);
+			GeoPunto.vertices.push(Vector);
+			var Material = new THREE.ParticleBasicMaterial({color: 0xFFFFFF});
+			P_1 = new THREE.ParticleSystem(GeoPunto,Material);
+			P_1.applyMatrix(new THREE.Matrix4().makeTranslation(10,10,0));
+			P_2 = new THREE.ParticleSystem(GeoPunto,Material);
+			P_2.applyMatrix(new THREE.Matrix4().makeTranslation(40,10,0));
+			P_3 = new THREE.ParticleSystem(GeoPunto,Material);
+			P_3.applyMatrix(new THREE.Matrix4().makeTranslation(40,40,0));
+			P_4 = new THREE.ParticleSystem(GeoPunto,Material);
+			P_4.applyMatrix(new THREE.Matrix4().makeTranslation(10,40,0));
+			
+			var MaterialTransform = new THREE.ParticleBasicMaterial({color: 0x3CFF00});
+			P_11 = new THREE.ParticleSystem(GeoPunto,MaterialTransform);
+			P_11.applyMatrix(new THREE.Matrix4().makeTranslation(10,10,0));
+			P_21 = new THREE.ParticleSystem(GeoPunto,MaterialTransform);
+			P_21.applyMatrix(new THREE.Matrix4().makeTranslation(40,10,0));
+			P_31 = new THREE.ParticleSystem(GeoPunto,MaterialTransform);
+			P_31.applyMatrix(new THREE.Matrix4().makeTranslation(40,40,0));
+			P_41 = new THREE.ParticleSystem(GeoPunto,MaterialTransform);
+			P_41.applyMatrix(new THREE.Matrix4().makeTranslation(10,40,0));
+			
+			scene.add(P_1);
+			scene.add(P_2);
+			scene.add(P_3);
+			scene.add(P_4);
+			
+			scene.add(P_11);
+			scene.add(P_21);
+			scene.add(P_31);
+			scene.add(P_41);
+			//scene.add(cubo);
+			scene.add(ejeX);
+			scene.add(ejeY);
+			scene.add(ejeZ);
+			
+			/*var Escala = new THREE.Matrix4();
+			Escala.set( 	2, 0, 0, 0,
+							0, 1, 0, 0, 
+							0, 0, 1, 0,
+							0, 0, 0, 1);
+
+			P_11.applyMatrix(Escala); 
+			P_21.applyMatrix(Escala);
+			P_31.applyMatrix(Escala);
+			P_41.applyMatrix(Escala);
+		
+		var Rotacion = new THREE.Matrix4();
+			Rotacion.set( Math.sqrt(3)/2, 0, 0.5, 0,
+						  0, 1, 0, 0, 
+						 -0.5, 0, Math.sqrt(3)/2, 0,
+						 0, 0, 0, 1);
+
+			P_11.applyMatrix(Rotacion); 
+			P_21.applyMatrix(Rotacion);
+			P_31.applyMatrix(Rotacion);
+			P_41.applyMatrix(Rotacion);
+		
+		var traslacion = new THREE.Matrix4();
+			traslacion .set( 1, 0, 0, 0,
+						    0, 1, 0, 0, 
+						    0, 0, 1, 1,
+						    0, 0, 0, 1);
+
+			P_11.applyMatrix(traslacion ); 
+			P_21.applyMatrix(traslacion );
+			P_31.applyMatrix(traslacion );
+			P_41.applyMatrix(traslacion );*/
+			
+			var transformacion = new THREE.Matrix4();
+			transformacion .set( 2*Math.sqrt(3)/2, 0, 2, 2*1*0.5,
+						    0, 1, 0, 0, 
+						    -0.5, 0, Math.sqrt(3)/2, 1*Math.sqrt(3)/2,
+						    0, 0, 0, 1);
+
+			P_11.applyMatrix(transformacion); 
+			P_21.applyMatrix(transformacion );
+			P_31.applyMatrix(transformacion );
+			P_41.applyMatrix(transformacion );
+			
+		
+		
+			console.log(P_11);
+		    console.log(P_21);
+		    console.log(P_31);
+		    console.log(P_41);
+			
+			
+			
+				
+			camera.position.x = 100;
+			camera.position.y =	0;	 
+		  	camera.position.z = 100;
+		  	camera.lookAt( origin );	
+		}
+		
+    
+    function animate() {
+        render();
+        requestAnimationFrame( animate );
+    }
+    
+    function render(){
+	
+		camera.lookAt(0, 0, 0);
+        renderer.render( scene, camera );
+		
+    }
+	
+	
+    </script>
+  </body>
+</html>
