@@ -85,7 +85,7 @@
 
 			var matSol = new THREE.MeshBasicMaterial( { color: 0xFF8F00, size: 0.1 } );
            	var geoSol = new THREE.SphereGeometry(6, 32, 24);
-			 Sol = new THREE.Mesh(geoSol, matSol);
+			Sol = new THREE.Mesh(geoSol, matSol);
 			
 			var matMercurio = new THREE.MeshBasicMaterial( { color: 0xFF4200, size: 0.1 } );
            	var geoMercurio = new THREE.SphereGeometry(0.5, 32, 24);
@@ -110,7 +110,7 @@
 			
 			var matLuna = new THREE.MeshBasicMaterial( { color: 0xFFFFFF, size: 0.1 } );
            	var geoLuna = new THREE.SphereGeometry(0.2, 32, 24);
-			 Luna = new THREE.Mesh(geoLuna, matLuna);
+			Luna = new THREE.Mesh(geoLuna, matLuna);
 			Luna.applyMatrix(new THREE.Matrix4().makeTranslation(0,0,1));
 			
 			var matMarte = new THREE.MeshBasicMaterial( { color: 0xFF1F00, size: 0.1 } );
@@ -166,7 +166,7 @@
 		if(Derecha){
 			Angulo += 0.001;	
 			AnguloLuna+=0.1;
-			var Rotacion = new THREE.Euler(0, Angulo, 0, 'XYZ');
+			
 		}
 		if(Izquierda){
 			Angulo +=-0.001;
