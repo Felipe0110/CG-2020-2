@@ -11,7 +11,7 @@ function sera(ex, In, r, x1,y2,z3, colur){
     
 //------------------------------------------------------------------
  var textureLoader = new THREE.TextureLoader();
- Pared = textureLoader.load("Imagenes/Meta.jpg");
+ Pared = textureLoader.load("Imagenes/Uno.jpg");
  var matPared = new THREE.MeshPhongMaterial( {color: 0xccd1ce,map: Pared, side: THREE.DoubleSide} );
 
 //  //Pared 1

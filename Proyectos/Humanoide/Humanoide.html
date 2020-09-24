@@ -248,29 +248,20 @@
 		}
 		
     
-    function animate() {
+    /*function animate() {
         render();
         requestAnimationFrame( animate );
-    }
+    }*/
+		
+	function animate() {
+				requestAnimationFrame( animate );
+				render();
+				renderer.render( scene, camera );
+			};
+
+			animate();
     
-    function render(){
-		/*var tx=0,ty=0,tz=0;
-		if(upArrow) {
-			tx=0; ty=0; tz+=.1;
-			
-		}
-		if(downArrow) {
-			tx=0; ty=0; tz+=-.1;
-			
-		}
-		
-		var t = new THREE.Matrix4();
-		t.set( 	1, 0, 0, tx,
-				0, 1, 0, ty, 
-				0, 0, 1, tz,
-				0, 0, 0, 1	);
-		
-		origenC.matrix.multiply(t); 	//APLICAR LA TRASLACIÓN A NIVEL LOCAL*/
+		function render(){
 
 		var RotacionCadera = new THREE.Euler(0, AnguloC, 0, 'XYZ');
 		origenC.setRotationFromEuler(RotacionCadera);
@@ -306,7 +297,7 @@
 		origenC_I.setRotationFromEuler(RotacionRodillaIzquierda);
 		
 		camera.lookAt(0, 0, 0);
-        renderer.render( scene, camera );
+        //renderer.render( scene, camera );
 		
     }
 	

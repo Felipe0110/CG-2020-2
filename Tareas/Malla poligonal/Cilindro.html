@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html >
+<head>
+	
+	<title>Malla poligonal</title>
+	<style>
+      html, body { margin: 0; padding: 0; overflow: hidden; }
+    </style>
+</head>
+<body>
+	<script src="js/three.min.js"></script>
+	<script src="js/controls/OrbitControls.js"></script>
+    <script src="js/Figuras.js"></script>
+
+    <script>
+		var size = 10;
+		var scene, aspect, camera, renderer,controls;
+		var arrowSize = 1;
+		var divisions = size;
+		var origin = new THREE.Vector3( 0, 0, 0 );
+		var x = new THREE.Vector3( 1, 0, 0 );
+		var y = new THREE.Vector3( 0, 1, 0 );
+		var z = new THREE.Vector3( 0, 0, 1 );
+		var color1 = new THREE.Color( 0xFFFFFF );
+		var color2 = new THREE.Color( 0x333333 );
+		var colorR = new THREE.Color( 0xAA3333 );
+		var colorG = new THREE.Color( 0x33AA33 );
+		var colorB = new THREE.Color( 0x333366 );
+		var cont_strip = 0;
+		var cont_fan = 0;
+		
+		init();
+		animate();
+		
+		function init(){
+          	scene = new THREE.Scene();
+			aspect = window.innerWidth / window.innerHeight;
+			camera = new THREE.PerspectiveCamera( 45, aspect, 0.1, 1000);
+			renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+			controls = new THREE.OrbitControls( camera, renderer.domElement );			
+			
+		  	var axesHelper = new THREE.AxesHelper( size );
+		  	var gridHelperXY = new THREE.GridHelper( size, divisions, color1, color1);
+		  	var gridHelperXZ = new THREE.GridHelper( size, divisions, color2, color2 );
+		  	var gridHelperYZ = new THREE.GridHelper( size, divisions, color2, color2 );
+            
+            var arrowX = new THREE.ArrowHelper( x, origin, arrowSize, colorR );
+            var arrowY = new THREE.ArrowHelper( y, origin, arrowSize, colorG );
+            var arrowZ = new THREE.ArrowHelper( z, origin, arrowSize, colorB );
+			
+			//Luces
+            var ambient = new THREE.AmbientLight( 0xffffff, 2 );
+            scene.add( ambient );
+            
+            var pointLight = new THREE.PointLight( 0xffffff, 1, 100 );
+            pointLight.position.set( 5, 3, 5 );
+            scene.add( pointLight );
+			
+			var pointLight2 = new THREE.PointLight( 0xffffff, 1, 25 );
+            pointLight2.position.set( 5, -5, 5 );
+            scene.add( pointLight2 );
+			
+			//Crecion del cilindro 
+			
+			var geoCilindro = new THREE.Geometry();		
+            var radio = 1;
+			var res = 30;   
+            for( var i = 0; i <= res; i++){
+                    
+                var punto = new THREE.Vector3();
+				var punto2 = new THREE.Vector3();
+				
+				punto.x = radio * Math.cos( (2 * Math.PI * i )/ res );
+                punto.y = 0
+                punto.z = radio * Math.sin( (2 * Math.PI * i )/ res );
+                
+				punto2.x = punto.x;
+				punto2.y = 3;
+				punto2.z = punto.z;
+        
+				geoCilindro.vertices.push( punto );
+				geoCilindro.vertices.push( punto2 );
+                
+			}
+			var matCilindro = new THREE.PointsMaterial( { color: 0xFFFFFF, size: 0.1 } );
+			
+			//strip
+			for( var i=2; i<geoCilindro.vertices.length; i++ ){
+			if(i%2!=0){
+			  geoCilindro.faces.push( new THREE.Face3(i,i-1,i-2) );
+				cont_strip++;
+				}
+			else{
+			  geoCilindro.faces.push( new THREE.Face3(i,i-2,i-1) );
+				cont_strip++;
+				}
+			}
+			geoCilindro.computeFaceNormals();
+			
+			 for(var i=0 ; i<cont_strip; i++){
+			  if(i%2!=0)	 
+			  	geoCilindro.faces[i].color = colorR;
+			  else
+			 	geoCilindro.faces[i].color = colorB;
+			
+			 }
+			matCilindro = new THREE.MeshBasicMaterial({vertexColors: THREE.FaceColors});
+			
+			var strip = new THREE.Mesh( geoCilindro, matCilindro);
+			scene.add( strip );
+			
+			//Tapas
+			var geoTapa_1 = new THREE.Geometry();
+			var geoTapa_2 = new THREE.Geometry();
+			var puntocero_1 = new THREE.Vector3(0,0,0);
+			var puntocero_2 = new THREE.Vector3(0,3,0);
+ 			geoTapa_1.vertices.push (puntocero_1);
+			geoTapa_2.vertices.push (puntocero_2);
+			
+			for( var i = 0; i <= res; i++){
+			var puntoTapa_1 = new THREE.Vector3();
+			var puntoTapa_2 = new THREE.Vector3();
+			puntoTapa_1.x = radio * Math.cos( ( 2 * Math.PI * i )/ res );
+			puntoTapa_1.y = 0;
+			puntoTapa_1.z = radio * Math.sin( ( 2 * Math.PI * i )/ res );
+				
+			puntoTapa_2.x = radio * Math.cos( ( -2 * Math.PI * i )/ res );
+			puntoTapa_2.y = 3;
+			puntoTapa_2.z = radio * Math.sin( ( -2 * Math.PI * i )/ res );	
+				
+			geoTapa_1.vertices.push (puntoTapa_1);
+			geoTapa_2.vertices.push (puntoTapa_2);	
+			}
+			var materialTapaAbajo = new THREE.PointsMaterial({color: 0xFFFFFF,size: 0.1});
+
+			
+			//Fan
+			for( var i=2; i < geoTapa_1.vertices.length; i++ ){
+			  geoTapa_1.faces.push( new THREE.Face3(0,i-1,i) );
+				cont_fan++;	
+			}
+			geoTapa_1.computeFaceNormals();
+			
+			for( var i=2; i < geoTapa_2.vertices.length; i++ ){
+			  geoTapa_2.faces.push( new THREE.Face3(0,i-1,i) );
+					
+			}
+			geoTapa_2.computeFaceNormals();
+			  
+			 for(var i=0 ; i<cont_fan; i++){
+			  if(i%2==0){	 
+			  geoTapa_1.faces[i].color = colorR;
+				geoTapa_2.faces[i].color = colorR;
+				
+			  }
+			  else{
+			  geoTapa_1.faces[i].color = colorB;
+			  geoTapa_2.faces[i].color = colorB;
+				console.log(i);
+			  }
+			 }
+			materialTapaAbajo= new THREE.MeshBasicMaterial({vertexColors: THREE.FaceColors});
+			  
+			var fan_1 = new THREE.Mesh( geoTapa_1, materialTapaAbajo );
+			var fan_2 = new THREE.Mesh( geoTapa_2, materialTapaAbajo );
+			scene.add( fan_1 );scene.add( fan_2 );
+			
+			
+			
+            scene.add( gridHelperXZ );
+		  	scene.add( arrowX );	
+		  	scene.add( arrowY );	
+		  	scene.add( arrowZ );	
+			
+			camera.position.x = 10;
+			camera.position.y = 10;	 
+		  	camera.position.z = 10;
+			
+		  	camera.lookAt( origin );
+		}
+		
+    
+    function animate() {
+        render();
+        requestAnimationFrame( animate );
+		
+    }
+    
+    function render(){
+		//camera.lookAt(0, 0, 0);
+        renderer.render( scene, camera );
+		
+    }
+	</script>
+</body>
+</html>
