@@ -247,21 +247,15 @@
 		  	camera.lookAt( origin );	
 		}
 		
-    
-    /*function animate() {
-        render();
-        requestAnimationFrame( animate );
-    }*/
-		
 	function animate() {
 				requestAnimationFrame( animate );
 				render();
 				renderer.render( scene, camera );
 			};
 
-			animate();
+			//animate();
     
-		function render(){
+	function render(){
 
 		var RotacionCadera = new THREE.Euler(0, AnguloC, 0, 'XYZ');
 		origenC.setRotationFromEuler(RotacionCadera);

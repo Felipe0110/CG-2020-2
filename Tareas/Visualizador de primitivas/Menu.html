@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Visualizador de primitivas</title>
+</head>
+<body>
+	<script src="js/three.js"></script>
+	<script src="js/dat.gui.min.js"></script>
+	<script src="js/controls/OrbitControls.js"></script>
+	<script src="js/ConvexGeometry.js"></script>
+	<script src="js/ConvexHull.js"></script>
+	<script src="Dodecaedro_Toroide.js"></script>
+	<script src="Escena.js"></script>
+	<script>
+		var scene, aspect, camera, renderer;
+		var cont_strip = 0;
+		init();
+		animate();
+		render();
+	
+		function init(){
+			escena();
+			
+			//dodecaedro();
+         	toroide(3);
+		
+			camera.position.x = 0;
+			camera.position.y = 10;	 
+		  	camera.position.z =  00;			
+		  	camera.lookAt( origin );
+			
+		}
+   
+  function render(){
+        //mesh.rotation.x += 0.01;
+	  	//cara_2.rotation.x += 0.1;
+        camera.lookAt( 0, 0, 0 );
+        renderer.render( scene, camera );
+    }
+ function animate() {
+        render();
+		controls.update();
+        requestAnimationFrame( animate );
+    }
+
+	</script>
+</body>
+</html>
