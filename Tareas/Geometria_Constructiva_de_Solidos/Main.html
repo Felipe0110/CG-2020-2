@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html >
+<head>
+	<title>Geometria Constructiva de Solidos</title>
+	<style>
+            html, body { margin: 0; padding: 0; overflow: hidden; }
+            #info {
+                position: absolute;
+                padding: 10px;
+                width: 100%;
+                text-align: center;
+                color: #FFFFFF;
+            }
+        </style>
+</head>
+<body>
+	<script src="js/three.js"></script>
+	<script src="js/controls/OrbitControls.js"></script>
+	<script src="Escenario.js"></script>
+	<script src="js/csg.js"></script>
+	<script src="js/THREE.CSG.js"></script>
+	<script src="Construccion.js"></script>
+	<script src="Solido_por_revoluciones.js"></script>
+	<script>
+		var scene, aspect, camera, renderer;
+    	init();
+		animate();
+	
+        function init(){
+            fondo();
+			Luz();
+			solido_Revolucion_Lather();
+			solido_Revolucion_Extrude();
+			objeto();
+
+        }
+    
+    function animate() {
+        render();
+		renderer.render( scene, camera );
+        controls.update();
+        requestAnimationFrame(animate);
+    }
+	function render(){
+	camera.lookAt(0, 0, 0);
+	}
+    	</script>
+	
+</body>
+</html>

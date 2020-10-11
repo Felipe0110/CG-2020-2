@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geometria</title>
+    <script src="js/Funciones/three.min.js"></script>
+    <script src="js/controls/OrbitControls.js"></script>
+    <script src="js/libs/dat.gui.min.js"></script>
+    <script src="js/Funciones/Escenario.js"></script>
+    <script src="js/Funciones/Geometrias.js"></script>
+    <script src="js/Funciones/Cilindro.js"></script>
+    <script src="js/Funciones/Toroide.js"></script>
+    <script src="js/Funciones/fontJSON.JSON"></script>
+    <script src="js/Funciones/Casa.js"></script>
+    <script src="js/Funciones/Cono.js"></script>
+    <script src="js/Funciones/octoaedro.js"></script>
+    <script src="js/Funciones/Tetaedro.js"></script>
+
+    <!--Menu-->
+    <link rel="stylesheet" href="Css/maint.css">
+    <link rel="stylesheet" href="Css/pushbar.css">
+    
+   <!-- <link rel="stylesheet" href="Css/Estilos.css" media="screen"> -->
+</head>
+<body>
+ 
+  </div>
+ <div id="sidebar">
+      <div class="toggle-btn">
+        <span>&#9776</span>
+      </div>
+      <ul>
+        <li>
+          <img src="img/Final.png" alt="Logo Fazt" class="logo">
+        </li>
+        <li><a href="Index.html">Home</a></li>
+        <li><a  href="Cilindro.html">Cilindro</a></li>
+        <li><a href="Toroide.html">Toroide</a></li>
+        <li><a href="Esfera.html">Esfera</a></li>
+        <li><a href="Cono.html">Cono</a></li>
+        <li><a href="Octa.html">Octaedro</a></li>
+        <li><a href="Tetaedro.html"</a>Tetaedro</li>
+        <li><a href="Cubo.html">Cubo</a></li>
+      </ul>
+    </div>
+<script>
+    var scene, aspect, camera, renderer;
+    init();
+		animate();
+	
+        function init(){
+                fondo();
+                //Luz();
+                octahedro();
+
+        }
+    
+        function animate() {
+            render();
+            controls.update();
+            requestAnimationFrame(animate);
+            render_Octa();
+    }
+    render();
+</script>
+
+<script src="js/libs/main.js"></script>
+
+</body>
+</html>
