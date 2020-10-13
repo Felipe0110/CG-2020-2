@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	
+	<title>ESCENARIO</title>
+</head>
+<body>
+	<script src="js/three.js"></script>
+	<script src="js/controls/OrbitControls.js"></script>
+	<script src="js/Escenario.js"></script>
+	<script src="Personaje.js"></script>
+	<script>
+	var scene, aspect, renderer,controls;
+    	init();
+		animate();
+	
+        function init(){
+            fondo();
+			Luz();
+		///	Personaje();
+
+        }
+    
+    function animate() {
+        render();
+		
+        controls.update();
+        requestAnimationFrame(animate);
+    }
+	function render(){
+	render_Camera();
+	
+	}
+		
+	</script>
+	
+</body>
+</html>

@@ -338,29 +338,20 @@
 			
 			renderer.render( scene, camera );
 		}
-			function onDocumentMouseMove( event ) {
-
-				mouseX = ( event.clientX - windowWidth / 2 );
-				mouseY = ( event.clientY - windowHeight / 2 );
-
-			}
+			
 
 			function updateSize() {
-
-				//if ( windowWidth != window.innerWidth || windowHeight != window.innerHeight ) {
-
 					windowWidth = window.innerWidth;
 					windowHeight = window.innerHeight;
-
 					renderer.setSize( windowWidth, windowHeight );
-
-				//}
 
 			}
 		function animate(){
 		render();
         requestAnimationFrame( animate );
 		}
+		
+		
 		function render(){
 		//Transformaciones auto 1
         var tx=0, tz=0;			
