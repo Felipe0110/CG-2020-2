@@ -16,19 +16,20 @@
 	
         function init(){
             fondo();
+			Personaje();
 			Luz();
-		///	Personaje();
+		
 
         }
     
     function animate() {
         render();
-		
-        controls.update();
+       
         requestAnimationFrame(animate);
     }
 	function render(){
-	render_Camera();
+		render_Camera();
+		render_Personaje();
 	
 	}
 		

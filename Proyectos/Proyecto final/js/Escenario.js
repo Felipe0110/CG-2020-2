@@ -1,6 +1,7 @@
-var cam_1 = false, cam_2 = true,cam_3 = false;
+var cam_1 = true, cam_2 = false,cam_3 = false;
 var camera,camera2,camera3;
 var centro;
+var cont = 1; 
 var views = [
 				{//Camara 1
 					left:0,
@@ -21,7 +22,7 @@ var views = [
 					bottom: 0,
 					width: 1,
 					height: 1,
-					background:  0x74F1D3,
+					background:  0xFFFFFF,
 					eye: [ 0, 20, 0 ],
 					up: [ 0,1, 0 ],
 					fov: 60,
@@ -49,24 +50,23 @@ var views = [
 
 function fondo(){
    
-  scene = new THREE.Scene();
-  aspect = window.innerWidth / window.innerHeight;
-  camera = new THREE.PerspectiveCamera( 45, aspect, 0.1, 1000);
-  camera2 = new THREE.PerspectiveCamera( 45, aspect, 0.1, 1000);
-  camara3 = new THREE.PerspectiveCamera( 45, aspect, 0.1, 1000);
-  renderer = new THREE.WebGLRenderer();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  document.body.appendChild(renderer.domElement);
-  scene.background =new THREE.Color( 0xFFFFFF );
-  controls = new THREE.OrbitControls(camera, renderer.domElement);
+	  scene = new THREE.Scene();
+	  aspect = window.innerWidth / window.innerHeight;
+	  camera = new THREE.OrthographicCamera( 45, aspect, 0.1, 1000);
+	  camera2 = new THREE.PerspectiveCamera( 45, aspect, 0.1, 1000);
+	  camara3 = new THREE.PerspectiveCamera( 45, aspect, 0.1, 1000);
+	  renderer = new THREE.WebGLRenderer();
+	  renderer.setSize(window.innerWidth, window.innerHeight);
+	  document.body.appendChild(renderer.domElement);
+	  scene.background = new THREE.Color( 0xFFFFFF );
+
 			
 		var view = views[0];
 		camera = new THREE.PerspectiveCamera( view.fov, window.innerWidth / window.innerHeight, 1, 10000 );
 		camera.position.fromArray( view.eye );
 		camera.up.fromArray( view.up );
 		view.camera = camera;
-
-
+		controls = new THREE.OrbitControls(camera, renderer.domElement);
 		var view = views[ 1 ];
 		camera2 = new THREE.PerspectiveCamera( view.fov, window.innerWidth / window.innerHeight, 1, 10000 );
 		camera2.position.fromArray( view.eye );
@@ -105,40 +105,70 @@ function fondo(){
    
 	var onKeyDown = function ( event ) {
 				switch ( event.keyCode ) {
-					case 49: 
+					case 67: 
+						if(cont == 0){
+						console.log("camara 1");
 						cam_1 = true;
 						cam_2 = false;
 						cam_3 = false;
-						break;
-					case 50: 
-						cam_1 = false;
-						cam_2 = true;
-						cam_3 = false;
-						break;
-					case 51:
-						cam_1 = false;
-						cam_2 = false;
-						cam_3 = true;
-						break;
+						cont++;
+						}
+						else{
+							if(cont == 1){
+								console.log("camara 2");
+								cam_1 = false;
+								cam_2 = true;
+								cam_3 = false;
+								cont++;
+							}
+							else{
+								if(cont == 2){
+								console.log("camara 3");
+								cam_1 = false;
+								cam_2 = false;
+								cam_3 = true;
+								cont = 0;
+								}
+							}
+						}
+
 				}
 			};	  
 		  			
-			var onKeyUp = function ( event ) {
+			/*var onKeyUp = function ( event ) {
 				switch ( event.keyCode ) {
-					case 49: // TRASLADAR ADELANTE
-						cam_1 = false;
-						break;
-					case 50: // TRASLADAR ATRÁS
+					case 67: 
+						if(cont == 0){
+						
+						cam_1 = true;
 						cam_2 = false;
-						break;
-					case 51:
 						cam_3 = false;
-						break;
-				}
-			};	  	
+						console.log("cam_1");
+						}
+						else{
+							if(cont == 1){
+								console.log("camara 2");
+								cam_1 = false;
+								cam_2 = true;
+								cam_3 = false;
+
+							}
+							else{
+								if(cont == 2){
+								console.log("camara 3");
+								cam_1 = false;
+								cam_2 = false;
+								cam_3 = true;
+								}
+							}
+						}
+
+					}
+						
+			};	 */	
 			
-			document.addEventListener( 'keydown', onKeyDown, false );
-			document.addEventListener( 'keyup', onKeyUp, false );
+	document.addEventListener( 'keydown', onKeyDown, false );
+	//document.addEventListener( 'keyup', onKeyUp, false );
 			
     
 
@@ -151,13 +181,10 @@ function fondo(){
     scene.add( arrowY );  
     scene.add( arrowZ );  
 	
-	var geoPunto = new THREE.Geometry();
-	geoPunto.vertices.push(new THREE.Vector3(8,0,0));
-	var matPunto = new THREE.PointsMaterial( { color: 0x000000, size: 0.1 } );
-	centro = new THREE.Points(geoPunto,matPunto);
-	centro.add(camera);
-	centro.add(camera2);
-	centro.add(camera3);
+	
+	scene.add(camera);
+	scene.add(camera2);
+	scene.add(camera3);
 	scene.add(centro);
 
     camera.position.x = 10;
@@ -176,12 +203,11 @@ function updateSize() {
 
 function render_Camera(){
 	
-	centro.rotation.y +=0.1; 
 	
-	 updateSize();
-
+	updateSize();
+	 
 	if(cam_1){
-
+	
 	var view = views[ 0 ];
 	var camera = view.camera;
 	view.updateCamera( camera, scene );
@@ -198,10 +224,11 @@ function render_Camera(){
 
 	camera.aspect = width / height;
 	camera.updateProjectionMatrix();
-	camera.lookAt(0, 0, 0);
 	renderer.render( scene, camera );
+		 controls.update();
 
 	}
+	
 	if(cam_2){
 	var view = views[ 1 ];
 	var camera2 = view.camera2;
@@ -220,9 +247,9 @@ function render_Camera(){
 
 	camera2.aspect = width / height;
 	camera2.updateProjectionMatrix();
-	camera2.lookAt(0, 0, 0);
 	renderer.render( scene, camera2 );
 	}
+	
 	if(cam_3){
 	var view = views[ 2 ];
 	var camera3 = view.camera3;
@@ -241,9 +268,7 @@ function render_Camera(){
 
 	camera3.aspect = width / height;
 	camera3.updateProjectionMatrix();
-		
 	renderer.render( scene, camera3 );
-	camera3.lookAt(0, 0, 0);
 	}
 }
 

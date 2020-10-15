@@ -29,7 +29,7 @@ function fondo(){
 
 	
     var axesHelper = new THREE.AxesHelper(size);
-            var gridHelperXY = new THREE.GridHelper(size, divisions, color1, color1);
+         var gridHelperXY = new THREE.GridHelper(size, divisions, color1, color1);
             var gridHelperXZ = new THREE.GridHelper(size, divisions, color2, color2);
             var gridHelperYZ = new THREE.GridHelper(size, divisions, color2, color2);
    
