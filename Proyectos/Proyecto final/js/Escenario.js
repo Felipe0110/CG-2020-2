@@ -10,11 +10,15 @@ var views = [
 					height: 1,
 					background: 0x74F1D3,
 					eye: [ 0, 20, 0],
-					up: [ 1, 0, 0 ],
+					up: [ 0, 1, 0 ],
 					fov: 60,
 					updateCamera: function ( camera, scene ) {
-					camera.position.x = Math.max( Math.min( camera.position.x, 2000 ), - 2000 );
-					camera.lookAt( scene.position );
+					//camera.position.y =  1.125;
+					//camera.rotation.x = 0.5;	
+					camera.position.y =  5;
+					camera.position.z = 0;
+					//camera.position.z = 0;
+					camera.lookAt(centro_Camera.position );
 					}
 				},
 				{//Camara 2
@@ -27,8 +31,9 @@ var views = [
 					up: [ 0,1, 0 ],
 					fov: 60,
 					updateCamera: function ( camera2, scene ) {
-					camera2.position.x = Math.max( Math.min( camera2.position.x, 2000 ), - 2000 );
-					camera2.lookAt( scene.position );
+					camera2.position.y =  3;
+					camera2.position.z = -7;
+					camera2.lookAt( centro_cuello.position );
 					}
 				},
 				{//Camara 3
@@ -41,8 +46,9 @@ var views = [
 					up: [ 0, 0, 1 ],
 					fov: 85,
 					updateCamera: function ( camera3, scene) {
-					camera3.position.y =  35;	
-					camera3.lookAt( scene.position );
+					camera3.position.y =  -5;
+					camera3.position.z =  5;
+					camera3.lookAt( centro_cuello.position );
 					}
 				}
 			];
@@ -66,7 +72,7 @@ function fondo(){
 		camera.position.fromArray( view.eye );
 		camera.up.fromArray( view.up );
 		view.camera = camera;
-		controls = new THREE.OrbitControls(camera, renderer.domElement);
+		//controls = new THREE.OrbitControls(camera, renderer.domElement);
 		var view = views[ 1 ];
 		camera2 = new THREE.PerspectiveCamera( view.fov, window.innerWidth / window.innerHeight, 1, 10000 );
 		camera2.position.fromArray( view.eye );
@@ -182,15 +188,11 @@ function fondo(){
     scene.add( arrowZ );  
 	
 	
-	scene.add(camera);
-	scene.add(camera2);
-	scene.add(camera3);
-	scene.add(centro);
+	
 
-    camera.position.x = 10;
+    /*camera.position.x = 0;
     camera.position.y = 5 ;   
-    camera.position.z =  0;    
-    camera.lookAt( origin );
+    camera.position.z =  0;   */ 
 }
 
 
@@ -225,7 +227,7 @@ function render_Camera(){
 	camera.aspect = width / height;
 	camera.updateProjectionMatrix();
 	renderer.render( scene, camera );
-		 controls.update();
+		 //controls.update();
 
 	}
 	
