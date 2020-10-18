@@ -8,7 +8,6 @@ function fondo(){
   document.body.appendChild(renderer.domElement);
   scene.background =new THREE.Color( 0xFFFFFF );
   controls = new THREE.OrbitControls(camera, renderer.domElement);
-
    
   var size = 10;
   var arrowSize = 1;
@@ -23,36 +22,31 @@ function fondo(){
   var colorG = new THREE.Color( 0x33AA33 );
   var colorB = new THREE.Color( 0x333366 );
 
-  var light = new THREE.DirectionalLight(0x33AA33);
-            light.position.set(1, 0, 1);
-            scene.add(light);  
-
+  	var light = new THREE.DirectionalLight(0x33AA33);
+    light.position.set(1, 0, 1);
+    scene.add(light);  
 	
     var axesHelper = new THREE.AxesHelper(size);
-         var gridHelperXY = new THREE.GridHelper(size, divisions, color1, color1);
-            var gridHelperXZ = new THREE.GridHelper(size, divisions, color2, color2);
-            var gridHelperYZ = new THREE.GridHelper(size, divisions, color2, color2);
-   
+    var gridHelperXY = new THREE.GridHelper(size, divisions, color1, color1);
+    var gridHelperXZ = new THREE.GridHelper(size, divisions, color2, color2);
+    var gridHelperYZ = new THREE.GridHelper(size, divisions, color2, color2);
 
-    
-
-   var arrowX = new THREE.ArrowHelper( x, origin, arrowSize, colorR );
-   var arrowY = new THREE.ArrowHelper( y, origin, arrowSize, colorG );
-   var arrowZ = new THREE.ArrowHelper( z, origin, arrowSize, colorB );
+    var arrowX = new THREE.ArrowHelper( x, origin, arrowSize, colorR );
+    var arrowY = new THREE.ArrowHelper( y, origin, arrowSize, colorG );
+    var arrowZ = new THREE.ArrowHelper( z, origin, arrowSize, colorB );
 
 	scene.add( gridHelperXZ );
     scene.add( arrowX); 
     scene.add( arrowY );  
     scene.add( arrowZ );  
 
-    camera.position.x = 10;
-    camera.position.y = 5 ;   
-    camera.position.z =  0;    
+    camera.position.x = 2.5;
+    camera.position.y = 5;   
+    camera.position.z = -5;    
     camera.lookAt( origin );
 }
 
 function render() {
-  //camera.position.x+=1;
   renderer.render(scene, camera);
 }
 
