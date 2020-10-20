@@ -5,29 +5,38 @@
 	<title>ESCENARIO</title>
 </head>
 <body>
+	
 	<script src="js/three.js"></script>
 	<script src="js/controls/OrbitControls.js"></script>
 	<script src="js/Escenario.js"></script>
 	<script src="Personaje.js"></script>
+	<script src="js/stats.module.js"></script>
+	<div id="container"></div>
 	<script>
 	var scene, aspect, renderer,controls;
+	var stats, container;
     	init();
 		animate();
 	
         function init(){
+			container = document.getElementById( 'container' );
             fondo();
 			Personaje();
 			Luz();
+			container.appendChild( renderer.domElement );
+			stats = new Stats();
+			container.appendChild( stats.dom );
 		
-
+			
         }
-    
+		
     function animate() {
         render();
-       
+		stats.update();
         requestAnimationFrame(animate);
     }
 	function render(){
+		
 		render_Camera();
 		render_Personaje();
 	

@@ -13,12 +13,12 @@ var views = [
 					up: [ 0, 1, 0 ],
 					fov: 60,
 					updateCamera: function ( camera, scene ) {
-					//camera.position.y =  1.125;
-					//camera.rotation.x = 0.5;	
-					camera.position.y =  5;
-					camera.position.z = 0;
+					camera.position.y =  1.125;
+					//camera.rotation.z = -3;	
+					//camera.position.y =  0.5;
+					
 					//camera.position.z = 0;
-					camera.lookAt(centro_Camera.position );
+					camera.lookAt(centro_Camera.position);
 					}
 				},
 				{//Camara 2
@@ -58,8 +58,8 @@ function fondo(){
    
 	  scene = new THREE.Scene();
 	  aspect = window.innerWidth / window.innerHeight;
-	  camera = new THREE.OrthographicCamera( 45, aspect, 0.1, 1000);
-	  camera2 = new THREE.PerspectiveCamera( 45, aspect, 0.1, 1000);
+	  camera = new THREE.PerspectiveCamera( 45, aspect, 0.1, 1000);
+	  camera2 = new THREE.OrthographicCamera( 45, aspect, 0.1, 1000);
 	  camara3 = new THREE.PerspectiveCamera( 45, aspect, 0.1, 1000);
 	  renderer = new THREE.WebGLRenderer();
 	  renderer.setSize(window.innerWidth, window.innerHeight);
@@ -187,20 +187,20 @@ function fondo(){
     scene.add( arrowY );  
     scene.add( arrowZ );  
 	
+	//document.addEventListener( 'mousemove', onDocumentMouseMove);
 	
-	
-
-    /*camera.position.x = 0;
-    camera.position.y = 5 ;   
-    camera.position.z =  0;   */ 
 }
+/*function onDocumentMouseMove( event ) {
+	event.clientY = 0;
+	centro.position.set( event.clientX,0,0 );
+	console.log("x = "+event.clientX+" "+"y ="+event.clientY)
+}*/
 
 
 function updateSize() {
   windowWidth = window.innerWidth;
   windowHeight = window.innerHeight;
   renderer.setSize( windowWidth, windowHeight );
-
 }
 
 function render_Camera(){
@@ -271,6 +271,8 @@ function render_Camera(){
 	camera3.aspect = width / height;
 	camera3.updateProjectionMatrix();
 	renderer.render( scene, camera3 );
+		
+	
 	}
 }
 
