@@ -1,8 +1,8 @@
 var centro,centro_cuello,centro_Pierna_Der,centro_Pierna_Izq,centro_Brazo_Der,centro_Brazo_Izq, centro_Camera;
-//var Acentro = 0,Acentro_cuello = 0,Acentro_Pierna_Der = 0,Acentro_Pierna_Izq = 0,Acentro_Brazo_Der = 0,Acentro_Brazo_Izq = 0;
 var adelante = false, atras = false, derecha = false, izquierda = false, arriba = false, abajo = false,positivo = false;
 var mouseX = 0, mouseY = 0;
 var thetaSum = 0;
+var cont_mov_y = 0;
 
 function Personaje(){
 	
@@ -15,13 +15,6 @@ function Personaje(){
 					case 83:
 					 atras = true;
 					break;
-					
-					/*case 68:
-					 derecha = true;
-					break;
-					
-					case 65:
-					 izquierda = true;*/
 				}
 			};	  
 		  			
@@ -35,12 +28,6 @@ function Personaje(){
 					 atras = false;
 
 					break;
-					/*case 68:
-					 derecha = false;
-					break;
-					
-					case 65:
-					 izquierda = false;*/
 					}
 						
 			};	 	
@@ -102,9 +89,10 @@ function Personaje(){
 	centro_Brazo_Der.add(Brazo_Der);
 	centro_Brazo_Izq.add(Brazo_Izq);
 	
+	centro_cuello.add(centro_Camera);	
 	centro_cuello.add(camera);
-	centro_cuello.add(camera2);
-	centro_cuello.add(camera3);
+	centro.add(camera2);
+	centro.add(camera3);
 	
 	centro.add(tronco);
 	centro.add(centro_cuello);
@@ -112,7 +100,7 @@ function Personaje(){
 	centro.add(centro_Pierna_Izq);
 	centro.add(centro_Brazo_Der);
 	centro.add(centro_Brazo_Izq);
-	centro.add(centro_Camera);
+	
 	scene.add(centro);
 	
 	document.addEventListener( 'mousemove', onDocumentMouseMove);
@@ -120,17 +108,15 @@ function Personaje(){
 	
 }
 	function onWindowResize() {
-				renderer.setSize( window.innerWidth, window.innerHeight );
-
-			}
+		renderer.setSize( window.innerWidth, window.innerHeight );
+		}
 	var onDocumentMouseMove = function ( event ) {
 		
-		event.clientY = 0;
+		//event.clientY = 0;
 
-		//console.log("x = "+event.clientX+" "+"y ="+event.clientY);
+		console.log("x = "+event.clientX+" "+"y ="+event.clientY);
 		//console.log("mouse = "+mouseX);
-		if(event.clientX >= mouseX){
-			
+		if(event.clientX > mouseX){
 			derecha = true;
 			izquierda = false;
 			mouseX = event.clientX;
@@ -142,25 +128,22 @@ function Personaje(){
 			mouseX = event.clientX;
 		}
 		
-		/*if(event.clientY<=mouseY){
-			angulo = event.clientY ; 
-			arriba = true;
-			abajo = false;
-			mouseY = event.clientX;
+		if(event.clientY > mouseY){
+			arriba = false;
+			abajo = true;
+			mouseY = event.clientY;
 		}
 		else{
-		  	angulo = event.clientY; 
-			izquierda = true;
-			derecha = false;
-			mouseY = event.clientY;
-		}*/
-
+		  	arriba = true;
+			abajo = false;
+			mouseY = event.clientY;	
+		}
 	}
 	
  function render_Personaje(){
 	 	var tx=0, ty= 0, tz=0;				
 		var theta = 0;			
-		var sigmaV = 0 ;
+	 	var sigmaV = 0 ;
 		var sigmaH = 0 ;
 	 	
 	 
@@ -187,24 +170,43 @@ function Personaje(){
 	 
 		thetaSum+=theta;
 		
+	 
+	 	//Movimientos de cabeza
+	
 		if(derecha){
 			sigmaH = -0.1;
 			derecha= false;
-	 
 		}
 		if(izquierda){
 			sigmaH = 0.1;
 			izquierda = false;
 		}
-	 	/*if(arriba){
-			sigmaV = -0.1;
+	 
+	 if(arriba){
+	 	if(cont_mov_y < -Math.PI/2){
+			//arriba = false;
+			console.log("no");
+		}
+		else{
+			
+			sigmaV -= 0.1;
+			cont_mov_y -= 0.1;
 			arriba = false;
 		}
-	 	if(abajo){
-			sigmaV = 0.1;
+	 }
+	 if(abajo){
+	 	if(cont_mov_y > Math.PI/2){
+			//abajo = false;
+			console.log("si");
+		}
+		
+		else{
+			
+			sigmaV += 0.1;
+			cont_mov_y+= 0.1;
 			abajo = false;
-		}*/
-
+		}
+	 }
 
 		var trasladar_Cuerpo = new THREE.Matrix4();
 		trasladar_Cuerpo.set( 	1, 0, 0, tx,
@@ -217,8 +219,8 @@ function Personaje(){
 		var ch = Math.cos(sigmaH);
 	 	var sh = Math.sin(sigmaH);
 	 
-	 	/*var cv = Math.cos(sigmaV);
-	 	var sv = Math.sin(sigmaV);*/
+	 	var cv = Math.cos(sigmaV);
+	 	var sv = Math.sin(sigmaV);
 	 
 		var ct1 = Math.cos(theta);
 	 	var st1 = Math.sin(theta);
@@ -227,7 +229,7 @@ function Personaje(){
 		var st2 = Math.sin(-theta);
 		
 		var rotacion_Horizontal = new THREE.Matrix4();
-		//var rotacion_Vertical = new THREE.Matrix4();
+		var rotacion_Vertical = new THREE.Matrix4();
 		var rotacion_Pierna_Brazo_Derecho = new THREE.Matrix4();
 		var rotacion_Pierna_Brazo_Izquierda = new THREE.Matrix4();
 
@@ -236,10 +238,10 @@ function Personaje(){
 				  			     -sh,  0, ch, 0,
 							       0,  0,  0, 1);	
 	 
-	 	/*rotacion_Vertical.set(1,  0, 0, 0,
+	 	rotacion_Vertical.set(1,  0, 0, 0,
 							    0,  cv,  -sv, 0, 
 				  			    0,  sv,   cv, 0,
-							  0,  0,  0, 1);*/
+							  	0,  0,  0, 1);
 	 
 		rotacion_Pierna_Brazo_Derecho.set( 	1,  0,  0, 0,
 											0, ct1,-st1, 0, 
@@ -254,9 +256,25 @@ function Personaje(){
 		var tempMatrix = new THREE.Matrix4();
 	 	tempMatrix.copyPosition( centro.matrix );
 	 	centro.applyMatrix( new THREE.Matrix4().getInverse(tempMatrix) );
-		centro.applyMatrix(rotacion_Horizontal);
+		centro.applyMatrix(rotacion_Vertical);
 		centro.applyMatrix( tempMatrix );
+	 
+	 	var tempCuello = new THREE.Matrix4();
+ 		/*tempCuello.copyPosition( centro_cuello.matrix );
+	 	centro_cuello.applyMatrix( new THREE.Matrix4().getInverse(tempCuello) );
+	 	centro_cuello.applyMatrix(rotacion_Horizontal);
+		centro_cuello.applyMatrix( tempCuello );*/
+
 	 	
+	 	/*tempCuello.copyPosition( centro_cuello.matrix );
+	 	centro_cuello.applyMatrix( new THREE.Matrix4().getInverse(tempCuello) );
+	 	//centro_cuello.applyMatrix(rotacion_Horizontal);
+		centro_cuello.applyMatrix(rotacion_Vertical);
+		centro_cuello.applyMatrix( tempCuello );*/
+	 
+	 	/*console.log("cuello x "+ centro_cuello.position.x);
+	 	console.log("cuello y "+ centro_cuello.position.y);
+	 	console.log("cuello z "+ centro_cuello.position.z);*/
 	 	
 	 	centro_Brazo_Izq.applyMatrix(rotacion_Pierna_Brazo_Derecho);
 		centro_Pierna_Der.applyMatrix(rotacion_Pierna_Brazo_Derecho);
