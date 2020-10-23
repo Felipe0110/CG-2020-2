@@ -13,6 +13,8 @@
 	<script src="js/stats.module.js"></script>
 	<script src="js/three.js"></script>
 	<script src="js/FirstPersonControls.js"></script>
+	<!--<script src="js/controls/OrbitControls.js"></script>-->
+	
 	
 	<div id="container"></div>	
 	
@@ -26,19 +28,14 @@
         function init(){
 			container = document.getElementById( 'container' );
             fondo();
-			Personaje();
 			Luz();
+			Personaje();
 			container.appendChild( renderer.domElement );
 			stats = new Stats();
 			container.appendChild( stats.dom );
-			window.addEventListener( 'resize', onWindowResize, false );
+		
 			
         }
-	
-		function onWindowResize() {	
-		renderer.setSize( window.innerWidth, window.innerHeight );
-	}
-
 		
     function animate() {
 		requestAnimationFrame(animate);

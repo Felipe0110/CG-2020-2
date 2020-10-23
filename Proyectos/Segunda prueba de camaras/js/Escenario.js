@@ -13,12 +13,7 @@ var views = [
 					up: [ 0, 1, 0 ],
 					fov: 60,
 					updateCamera: function ( camera, scene ) {
-					camera.position.y =  1.125;
-					//camera.rotation.z = -3;	
-					//camera.position.y =  0.5;
 					
-					//camera.position.z = 0;
-					//camera.lookAt(centro_Camera.position);
 					}
 				},
 				{//Camara 2
@@ -33,7 +28,7 @@ var views = [
 					updateCamera: function ( camera2, scene ) {
 					camera2.position.y =  3;
 					camera2.position.z = -7;
-					camera2.lookAt( centro_cuello.position );
+					camera2.lookAt( 1,1,0 );
 					}
 				},
 				{//Camara 3
@@ -48,7 +43,7 @@ var views = [
 					updateCamera: function ( camera3, scene) {
 					camera3.position.y =  -5;
 					camera3.position.z =  5;
-					camera3.lookAt( centro_cuello.position );
+					//camera3.lookAt(  );
 					}
 				}
 			];
@@ -88,7 +83,7 @@ function fondo(){
 
 		clock = new THREE.Clock();
 		controls = new THREE.FirstPersonControls(camera);
-		controls.movementSpeed = 5;
+		controls.movementSpeed = 10;
 		controls.lookSpeed = 0.3;
 		
 		var view = views[ 1 ];
@@ -103,10 +98,10 @@ function fondo(){
 		camera3.up.fromArray( view.up );
 		view.camera3 = camera3;
 			
-		var axesHelper = new THREE.AxesHelper(size);
-        var gridHelperXY = new THREE.GridHelper(size, divisions, color1, color1);
-        var gridHelperXZ = new THREE.GridHelper(size, divisions, color2, color2);
-        var gridHelperYZ = new THREE.GridHelper(size, divisions, color2, color2);
+    var axesHelper = new THREE.AxesHelper(size);
+            var gridHelperXY = new THREE.GridHelper(size, divisions, color1, color1);
+            var gridHelperXZ = new THREE.GridHelper(size, divisions, color2, color2);
+            var gridHelperYZ = new THREE.GridHelper(size, divisions, color2, color2);
    
 	var onKeyDown = function ( event ) {
 				switch ( event.keyCode ) {
@@ -116,7 +111,6 @@ function fondo(){
 						cam_1 = true;
 						cam_2 = false;
 						cam_3 = false;
-						console.log(cont);
 						cont++;
 						}
 						else{
@@ -155,6 +149,8 @@ function fondo(){
     scene.add( arrowZ );  	
 }
 
+
+
 function updateSize() {
   windowWidth = window.innerWidth;
   windowHeight = window.innerHeight;
@@ -162,6 +158,8 @@ function updateSize() {
 }
 
 function render_Camera(){
+	
+	
 	updateSize();
 	 
 	if(cam_1){
