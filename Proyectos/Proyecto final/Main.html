@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta charset="utf-8">
+    <title>Minecraft</title>
+   <link rel="stylesheet" type="text/css" href="style.css">
+    <style>
+        html, body { margin: 0; padding: 0; overflow: hidden; cursor: none;}
+    </style>
+     <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+  </head>
+   	
+    <body> 
+    <div id="info">
+     	<a href="Home.html" ><span class="Primero"><i class="icon icon-home "></i></span>Home</a>
+		<button id="GUARDAR_OBJETO">Guardar objeto</button> 
+        <button id="GUARDAR">Guardar</button>
+        
+       
+		
+	</div>
+	
+	<div class = "cuadros" id="cuadro"></div>
+	<div class = "cuadros" id="barrera"></div>
+    <div class = "cuadros" id="cuadrogrande"></div>
+    <div class = "cuadros" id="menu"></div>
+    <div class = "cuadros" id="block3"></div>
+    <div class = "cuadros" id="block4"></div> 
+    <div class = "cuadros" id="block5"></div> 
+    <div class = "cuadros" id="block6"></div>
+    <div class = "cuadros" id="block7"></div>
+    <div class = "cuadros" id="block8"></div>
+    <div class = "cuadros" id="block9"></div>
+    
+</body>
+  <body>
+  
+ 	<script src="js/three.js"></script>
+  	<script src="js/THREE.CSG.js"></script>
+	<script src="js/csg.js"></script>
+    <script src="js/GLTFExporter.js"></script>
+    <script src="js/OBJExporter.js"></script>
+    <script src="js/poner.js"></script>
+    <script src="js/Escenario.js"></script>
+	<script src="js/Personaje_Minecraft.js"></script>
+	<script src="js/stats.module.js"></script>
+	<script src="js/FirstPersonControls.js"></script>
+	<script src="js/Lensflare.js"></script>
+	
+
+
+   	
+   	<div id="container"></div>	
+    
+    <script>
+		
+		var scene, aspect, camera, renderer, controls;
+		var exporter2;
+		var origen = 0;
+		var dia,noche;
+		
+		
+		init();
+		animate();
+		
+		function init(){
+				
+			container = document.getElementById( 'container' );
+			fondo();
+			Personaje();
+        	Bloques();
+			Luz();
+			container.appendChild( renderer.domElement );
+			//scene.background = new THREE.CubeTextureLoader().setPath( 'texturas/cielo/' ).load( [ 'px.jpg', 'nx.jpg', 'py.jpg', 'ny.jpg', 'pz.jpg', 'nz.jpg' ] );
+			//stats = new Stats();
+			//container.appendChild( stats.dom );
+			
+			exporter2 = new THREE.OBJExporter();
+			const buttonExportOBJ = document.getElementById( 'GUARDAR_OBJETO' );
+			buttonExportOBJ.addEventListener( 'click', exportOBJ );   
+            const buttonExportGLTF =  document.getElementById( 'GUARDAR' );
+		    buttonExportGLTF.addEventListener( 'click', function () {exportGLTF( scene );} );
+			
+		}
+		  function exportOBJ() {
+
+				const result = exporter2.parse( scene );
+				saveArrayBuffer( result, 'box.obj' );
+
+			}
+        
+        
+        function exportGLTF( input ) {
+
+				const gltfExporter = new  THREE.GLTFExporter();
+				gltfExporter.parse( input, function ( result ) {
+
+					if ( result instanceof ArrayBuffer ) {
+						saveArrayBuffer( result, 'scene.glb' );
+					} else {
+						const output = JSON.stringify( result, null, 2 );
+						console.log( output );
+						saveString( output, 'scene.gltf' );
+					}
+				} );
+			}
+			const link = document.createElement( 'a' );
+			link.style.display = 'none';
+			document.body.appendChild( link );
+
+			function save( blob, filename ) {
+
+				link.href = URL.createObjectURL( blob );
+				link.download = filename;
+				link.click();
+
+			}
+
+			function saveString( text, filename ) {
+
+				save( new Blob( [ text ], { type: 'text/plain' } ), filename );
+			}
+
+			function saveArrayBuffer( buffer, filename ) {
+
+				save( new Blob( [ buffer ], { type: 'application/octet-stream' } ), filename );
+
+			}
+
+		function animate(){
+			requestAnimationFrame( animate );
+			render();
+			//stats.update();
+		}
+
+	function render(){	
+        	render_Camera();
+			render_Personaje();
+		}
+
+	    </script>
+      </body>
+</html>

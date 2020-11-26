@@ -1,0 +1,109 @@
+
+*{
+    margin: 0%;
+    padding: 0%;        
+}
+.fondo{
+   
+    
+    background: hsla(302, 60%, 34%, 0.486);  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, hsla(23, 89%, 54%, 0.6), hsla(352, 79%, 58%, 0.6), hsla(302, 60%, 34%, 0.6));  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, hsla(23, 89%, 54%, 0.397), hsla(352, 79%, 58%, 0.37), hsla(302, 60%, 34%, 0.356)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    width: auto;
+    height: 1080px;
+    position: relative;
+      
+    
+}
+.fondoDos{
+   
+    
+  background: rgb(2,0,36);
+  background: linear-gradient(36deg, rgba(2,0,36,1) 0%, rgba(9,9,121,0.17883003048780488) 45%, rgba(0,212,255,1) 100%);
+  width: auto;
+  height: 1080px;
+  position: relative;
+    
+  
+}
+.container{
+    text-align:center;
+ }
+.CajaUno{ 
+    position:absolute;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    width:auto;
+    top: 20%;
+    color: rgb(250, 250, 250);
+    text-align: center;
+    font-size: 500%;
+    text-transform: uppercase;
+
+}
+/*Botones*/
+
+  .boton_personalizado{
+/*Posicion*/
+    position:absolute;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    width:225px;
+    top: 30%;
+
+ /*Boton*/   
+    text-decoration: none;
+    padding: 15px 32px;
+    font: initial;
+    font-weight: 600;
+    font-size: 200%;
+    color: #ffffff;
+    text-align: center;
+    text-transform: uppercase;
+    background-color: transparent;
+
+    border-radius: 3px;
+    border: 2px solid #e65918;
+    border-radius: 8px;
+    transition-duration: 0.4s;
+    
+  }
+  .boton_personalizado:hover{
+    color: #ffffff;
+    background-color: #4CAF50;
+  }
+/*Boton button*/
+.button {
+    /*Posicion*/
+    position:absolute;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    width:225px;
+    top: 40%;
+
+
+    text-decoration: none;
+    padding: 15px 32px;
+    font: initial;
+    font-weight: 600;
+    font-size: 200%;
+    color: #ffffff;
+    text-align: center;
+    text-transform: uppercase;
+    background-color: transparent;
+
+    border-radius: 3px;
+    border: 2px solid #e65918;
+    border-radius: 8px;
+    transition-duration: 0.4s;
+  }
+  .button:hover {
+    background-color: #4CAF50; /* Green */
+    color: white;
+  }
+
+   

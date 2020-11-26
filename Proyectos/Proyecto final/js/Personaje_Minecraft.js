@@ -2,12 +2,11 @@ var centro,centro_cuello,centro_Pierna_Der,centro_Pierna_Izq,centro_Brazo_Der,ce
 var adelante = false, atras = false, derecha = false, izquierda = false,positivo = false;
 var mouseX = 0;
 var thetaSum = 0;
-var controls,clock;
 
 function Personaje(){
 	
-	var material1 = new THREE.MeshBasicMaterial( {color: 0xFFC279} );
-	var material2 = new THREE.MeshBasicMaterial( {color: 0x00C1FF} );
+	var material1 = new THREE.MeshStandardMaterial( {color: 0xFFC279} );
+	var material2 = new THREE.MeshStandardMaterial( {color: 0x00C1FF} );
 	
 	var geoCabeza = new THREE.BoxBufferGeometry( 1, 1, 1 );
 	var cabeza = new THREE.Mesh( geoCabeza, material1 );
@@ -36,8 +35,7 @@ function Personaje(){
 	var geoPunto = new THREE.Geometry();
 	geoPunto.vertices.push(new THREE.Vector3(0,0,0));
 	var matPunto = new THREE.PointsMaterial( { color: 0x000000, size: 0.1 } );
-	
-	centro = new THREE.Points(geoPunto,matPunto);
+ 
 	centro_cuello = new THREE.Points(geoPunto,matPunto);
 	centro_Pierna_Der = new THREE.Points(geoPunto,matPunto);
 	centro_Pierna_Izq = new THREE.Points(geoPunto,matPunto);
@@ -51,7 +49,9 @@ function Personaje(){
 	centro_Brazo_Der.applyMatrix(new THREE.Matrix4().makeTranslation(0.5,0.625,0));
 	centro_Brazo_Izq.applyMatrix(new THREE.Matrix4().makeTranslation(-0.5,0.625,0));
 	centro_Camera.applyMatrix(new THREE.Matrix4().makeTranslation(0,0,5));
-	centro.applyMatrix(new THREE.Matrix4().makeTranslation(posicionX,1.625,posicionZ));
+	
+	centro = new THREE.Points(geoPunto,matPunto);
+	centro.applyMatrix(new THREE.Matrix4().makeTranslation(0,17.625,0));
 	
 	centro_cuello.add(cabeza);
 	centro_Pierna_Der.add(Pierna_Der);
@@ -69,7 +69,7 @@ function Personaje(){
 	centro.add(centro_Pierna_Izq);
 	centro.add(centro_Brazo_Der);
 	centro.add(centro_Brazo_Izq);
-	scene.add(centro);
+	//scene.add(centro);
 			
 
 	var onKeyDown = function ( event ) {
@@ -107,12 +107,13 @@ function Personaje(){
 			izquierda = false;
 			mouseX = event.clientX;
 		}
+		
 		else{
 			izquierda = true;
 			derecha = false;
 			mouseX = event.clientX;
 		}
-	}
+	};
 	
 			
 	document.addEventListener( 'keydown', onKeyDown, false );
@@ -127,6 +128,8 @@ function Personaje(){
 	 	centro.position.z = posicionZ;
 	 
 	 	if(cam_2 || cam_3){
+			
+		scene.add(centro);
 	 	var tx=0, ty= 0, tz=0;				
 		var theta = 0;			
 	 	var sigmaV = 0 ;
@@ -166,8 +169,14 @@ function Personaje(){
 			sigmaH = 0.1;
 			izquierda = false;
 		}
-	 
+			
+		var trasladar_Cuerpo = new THREE.Matrix4();
+		trasladar_Cuerpo.set( 	1, 0, 0, tx,
+								0, 1, 0, ty, 
+								0, 0, 1, tz,
+								0, 0, 0, 1	);
 		
+		centro.matrix.multiply(trasladar_Cuerpo);
 	 
 		var ch = Math.cos(sigmaH);
 		var sh = Math.sin(sigmaH);
@@ -197,13 +206,6 @@ function Personaje(){
 											0, st2, ct2, 0,
 											0,  0,  0, 1 );							
 		
-	 	var trasladar_Cuerpo = new THREE.Matrix4();
-		trasladar_Cuerpo.set( 	1, 0, 0, tx,
-								0, 1, 0, ty, 
-								0, 0, 1, tz,
-								0, 0, 0, 1	);
-		
-		centro.matrix.multiply(trasladar_Cuerpo); 
 		var tempMatrix = new THREE.Matrix4();
 		tempMatrix.copyPosition( centro.matrix );
 		centro.applyMatrix( new THREE.Matrix4().getInverse(tempMatrix) );

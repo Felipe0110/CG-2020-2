@@ -1,0 +1,53 @@
+#cuadro{ 
+    width: 40px;
+    height: 40px; 
+    background-image:url();
+    position: absolute; 
+    left: 500px; 
+    top: 600px; }
+   
+#barrera{ 
+    position: absolute; 
+    top: 600px; 
+    left: 500px; 
+    width: 40px; 
+    height: 40px;
+    outline: 5px solid red;
+
+}
+
+#cuadrogrande{
+     position: absolute; 
+     outline: 4px solid grey;
+    top: 589px; 
+    left: 490px; 
+    width: 400px; 
+    height: 60px;
+     
+}
+#menu{
+     position: absolute; 
+    background-image:url(https://raw.githubusercontent.com/Kousei-edt/ProyectoFinal/master/assets/img/2.png);
+    top: 600px; 
+    left: 550px; 
+    width: 40px; 
+    height: 40px;
+   
+   
+}
+#block3{
+    position: absolute; 
+    background-image: url();
+    top: 600px; 
+    left: 600px; 
+    width: 40px; 
+    height: 40px;
+}
+#block4{
+       position: absolute; 
+    background-image: url();
+    top: 600px; 
+    left: 650px; 
+    width: 40px; 
+    height: 40px; 
+}

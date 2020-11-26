@@ -22,7 +22,7 @@ THREE.FirstPersonControls = function ( object, domElement ) {
 
 	this.heightSpeed = false;
 	this.heightCoef = 1.0;
-	this.heightMin = 0.0;
+	this.heightMin = 2;
 	this.heightMax = 1.0;
 
 	this.constrainVertical = false;
@@ -48,7 +48,6 @@ THREE.FirstPersonControls = function ( object, domElement ) {
 
 	this.viewHalfX = 0;
 	this.viewHalfY = 0;
-
 	if ( this.domElement !== document ) {
 
 		this.domElement.setAttribute( 'tabindex', - 1 );
@@ -88,8 +87,8 @@ THREE.FirstPersonControls = function ( object, domElement ) {
 
 			switch ( event.button ) {
 
-				case 0: this.moveForward = true; break;
-				case 2: this.moveBackward = true; break;
+				//case 0: this.moveForward = true; break;
+				//case 2: this.moveBackward = true; break;
 
 			}
 

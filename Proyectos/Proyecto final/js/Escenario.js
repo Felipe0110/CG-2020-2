@@ -2,7 +2,9 @@ var cam_1 = true, cam_2 = false,cam_3 = false;
 var camera,camera2,camera3;
 var controls,clock;
 var cont = 1; 
-var posicionX , posicionZ ;
+var posicionX = 0, posicionZ = 0;
+let rectLight, rectLightHelper;
+
 var views = [
 				{//Camara 1
 					left:0,
@@ -14,7 +16,6 @@ var views = [
 					up: [ 0, 1, 0 ],
 					fov: 60,
 					updateCamera: function ( camera, scene ) {
-
 					}
 				},
 				{//Camara 2
@@ -42,7 +43,7 @@ var views = [
 					up: [ 0, 1, 0 ],
 					fov: 85,
 					updateCamera: function ( camera3, scene) {
-					camera3.position.y =  -5;
+					camera3.position.y =  -2;
 					camera3.position.z =  5;
 					camera3.lookAt( centro.position );
 					}
@@ -65,21 +66,26 @@ function fondo(){
 
    
 	  scene = new THREE.Scene();
-	  scene.fog = new THREE.Fog(0xffffff, 10, 50);
 	  aspect = window.innerWidth / window.innerHeight;
+	  scene.fog = new THREE.Fog(0xFFFFFF,20 , 40);
 	  camera = new THREE.PerspectiveCamera( 45, aspect, 0.1, 1000);
 	  camera2 = new THREE.PerspectiveCamera( 45, aspect, 0.1, 1000);
 	  camara3 = new THREE.PerspectiveCamera( 45, aspect, 0.1, 1000);
 	  renderer = new THREE.WebGLRenderer();
 	  renderer.setSize(window.innerWidth, window.innerHeight);
+	  renderer.shadowMap.enabled = true;
+	  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 	  document.body.appendChild(renderer.domElement);
 	  scene.background = new THREE.Color( 0xFFFFFF );
+	
+
 
 		var view = views[0];
 		camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
 		camera.position.fromArray( view.eye );
 		camera.up.fromArray( view.up );
 		view.camera = camera;
+		
 
 		clock = new THREE.Clock();
 		controls = new THREE.FirstPersonControls(camera);
@@ -111,6 +117,7 @@ function fondo(){
 						cam_1 = true;
 						cam_2 = false;
 						cam_3 = false;
+						console.log(cont);
 						cont++;
 						}
 						else{
@@ -140,7 +147,6 @@ function fondo(){
    var arrowY = new THREE.ArrowHelper( y, origin, arrowSize, colorG );
    var arrowZ = new THREE.ArrowHelper( z, origin, arrowSize, colorB );
 
-	
     scene.add( arrowX); 
     scene.add( arrowY );  
     scene.add( arrowZ ); 
@@ -179,7 +185,6 @@ function render_Camera(){
 	posicionZ = camera.position.z;
 	scene.remove(centro);
 	controls.update(clock.getDelta());
-		
 	}
 	
 	if(cam_2){
@@ -224,17 +229,20 @@ function render_Camera(){
 	
 	renderer.render( scene, camera3 );
 	}
-}
+	
+	
 
+
+}
 function Luz(){
-  var ambient = new THREE.AmbientLight( 0xffffff, 1 );
+  var ambient = new THREE.AmbientLight( 0xFFFFFF, 0.2 );
    scene.add( ambient );
-			
-   /*var pointLight = new THREE.PointLight( 0xffffff, 1, 100 );
-   pointLight.position.set( -5, 1, 5 );
-   scene.add( pointLight );
-			
-   var pointLight = new THREE.PointLight( 0xffffff, .5, 100 );
-   pointLight.position.set( 5, 1, -5 );
-   scene.add( pointLight );*/
+	
+rectLight = new THREE.RectAreaLight( 0xFFD55B, 1, 100, 100 );
+rectLight.position.set( 0, 80, 0 );
+//scene.add( rectLight );
+	
+dia = new THREE.SpotLight( 0xFFFFFF,0.5 );
+dia.position.set( 0, 1000, -200);
+scene.add(dia);
 }

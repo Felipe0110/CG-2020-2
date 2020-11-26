@@ -1,0 +1,301 @@
+header{
+    width: auto;
+    background: #06060f;
+}
+nav{
+    margin: 0PX;
+    width: 100%;
+    max-width: 100%;
+}
+nav ul{
+    list-style: none; 
+}
+nav>ul{
+    display: table;
+    overflow: hidden;
+    width: 100%;
+    background: #06060f;
+    position: relative;
+} 
+nav>ul li{
+    display: table-cell;    
+}
+/*Sub menu*/
+nav>ul> li:hover >ul{
+    display: block;
+    height: 100%;
+}
+nav >ul >li >ul{
+    display: block;
+    position: absolute;
+    background: #000000;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+    height: 0%;
+    -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -o-transition: all .3s ease;
+    transition: all .3s ease;
+}
+
+/*nav >ul>li>ul{
+    display:none ;
+}*/
+nav >ul li a{
+    color: #ffffff;
+    display: block;
+    line-height: 20px;
+    padding: 20px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    /*https://css3generator.com/*/
+    -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -o-transition: all .3s ease;
+    transition: all .3s ease;
+}
+nav>ul>li>ul>li a:hover{
+background: #5da5a2;
+
+}
+nav>ul>li>a span{
+    background: #174459;
+    display: block;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    position:absolute ;
+    top: -55px;
+    -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -o-transition: all .3s ease;
+    transition: all .3s ease;
+}
+nav>ul>li>a span .icon{
+    display: block;
+    line-height: 60px;
+}
+nav>ul>li>a:hover>span{
+    top: 0;
+}
+/*COLORES*/
+nav >ul li a .Primero{
+    background: #b40b0b;
+}
+nav >ul li a .Segundo{
+    background: #29e707;
+}
+nav >ul li a .Tercero{
+    background: #09b4c3;
+}
+nav >ul li a .Cuarto{
+    background: #ee970a;
+}
+nav >ul li a .Quinto{
+    background: #b40b65;
+}
+/*Panerl de control */
+.TutuloHuno {
+    color: #ffffffab;
+    text-shadow: 2px 2px 2px #29e707;
+}
+/* Menu superior*/
+.menu-fixed {
+   position: fixed;
+   z-index: 1000;
+   top: 0; 
+}
+ /*INSTRUCCIONES*/
+ .InfoControlos {
+    /* Borde */
+    position: absolute;
+    margin: auto;
+
+    height: 60%;
+    left: 0;
+    border-radius: 3px;
+    border: 2px dashed #e65918;
+    border-radius: 8px;
+    transition-duration: 0.4s;
+    background-color: #a6d8f549;
+    /*Interno*/
+      
+       color: firebrick;
+       text-align: center;
+       top: 15%;
+       left: 0;
+       right: 0;
+       width: 500px;
+     
+     
+     }
+.TutuloHuno {
+    position: relative;
+    color: #ffffffab;
+    text-shadow: 2px 2px 2px #0b265fc9;
+    top: 5%;
+    font-size: 250%;
+}
+/*Boton button*/
+.BotonCamara {
+    /*Posicion*/
+    position: relative;;
+    margin: 0 auto;
+    left: -5%;
+    right: 0;
+    width:100px;
+    top: 15%;
+
+
+    text-decoration:none;
+    padding: 15px 0px;
+    font: initial;
+    font-weight: 600;
+    font-size: 90%;
+    color: #ffffff;
+
+    text-transform: uppercase;
+    background-color: transparent;
+
+    border-radius: 3px;
+    border: 2px solid #e65918;
+    border-radius: 8px;
+    transition-duration: 0.4s;
+    
+}
+  .BotonCamara:hover {
+    background-color: #4CAF50; /* Green */
+    color: white;
+  }
+  .BotonBloques{
+    /*Posicion*/
+    position: relative;
+    margin: 0 auto;
+    left: -0%;
+    right: 0;
+    width:80px;
+    top: 15%;
+
+
+    text-decoration: none;
+    padding: 15px 0px;
+    font: initial;
+    font-weight: 600;
+    font-size: 90%;
+    color: #ffffff;
+   
+    text-transform: uppercase;
+    background-color: transparent;
+   
+
+    border-radius: 3px;
+    border: 2px solid #e65918;
+    border-radius: 8px;
+    transition-duration: 0.4s;
+  }
+  .BotonBloques:hover {
+    background-color: #4CAF50; /* Green */
+    color: white;
+  }
+  .BotonMovimiento{
+    /*Posicion*/
+    position: relative;
+    margin: 0 auto;
+    left: 5%;
+    right: 0;
+    width:120px;
+    top: 15%;
+
+
+    text-decoration: none;
+    padding: 15px 0px;
+    font: initial;
+    font-weight: 600;
+    font-size: 90%;
+    color: #ffffff;
+    text-align: center;
+    text-transform: uppercase;
+    background-color: transparent;
+
+    border-radius: 3px;
+    border: 2px solid #e65918;
+    border-radius: 8px;
+    transition-duration: 0.4s;
+  }
+  .BotonMovimiento:hover {
+    background-color: #4CAF50; /* Green */
+    color: white;
+  }
+  /*TEXTO CONTROLADORES*/
+  .TextosFinales{
+      position: relative;
+      top: 25%;
+      height: 60%;
+      width: 90%;
+     background-color: #b40b0b;
+      margin-right: auto;
+      margin-left: auto;
+      
+  }
+#div1{
+
+    background-color: #35c6ff80;
+    position: relative;
+    top: 18%;
+    width: 80%;
+    height: 65%;
+    margin: 0 auto;
+    left: 0%;
+    right: 0;
+    border-radius: 3px;
+    border: 1px dashed #060c55;
+    border-radius: 8px;
+    transition-duration: 0.4s;
+    
+}
+#div2{
+
+    background-color: #35c6ff80;
+    position: relative;
+    top: 18%;
+    width: 80%;
+    height: 65%;
+    margin: 0 auto;
+    left: 0%;
+    right: 0;
+    border-radius: 3px;
+    border: 1px dashed #060c55;
+    border-radius: 8px;
+    transition-duration: 0.4s;
+}
+#div3{
+
+    background-color: #35c6ff80;
+    position: relative;
+    top: 18%;
+    width: 80%;
+    height: 65%;
+    margin: 0 auto;
+    left: 0%;
+    right: 0;
+    border-radius: 3px;
+    border: 1px dashed #060c55;
+    border-radius: 8px;
+    transition-duration: 0.4s;
+}
+.escondido{
+    display: none;
+}
+.TEXTOS{
+   color: #ffffff;
+}
+.Tex{
+    color: #ffffff;
+    text-shadow: 2px 2px 2px #0f25a7;
+    top: 5%;
+}
