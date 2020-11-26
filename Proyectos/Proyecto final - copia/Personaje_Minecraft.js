@@ -51,7 +51,7 @@ function Personaje(){
 	centro_Camera.applyMatrix(new THREE.Matrix4().makeTranslation(0,0,5));
 	
 	centro = new THREE.Points(geoPunto,matPunto);
-	centro.applyMatrix(new THREE.Matrix4().makeTranslation(0,3.625,0));
+	centro.applyMatrix(new THREE.Matrix4().makeTranslation(0,1.625,0));
 	
 	centro_cuello.add(cabeza);
 	centro_Pierna_Der.add(Pierna_Der);
@@ -69,7 +69,8 @@ function Personaje(){
 	centro.add(centro_Pierna_Izq);
 	centro.add(centro_Brazo_Der);
 	centro.add(centro_Brazo_Izq);
-	//scene.add(centro);		
+	//scene.add(centro);
+			
 
 	var onKeyDown = function ( event ) {
 		switch ( event.keyCode ) {
@@ -127,8 +128,6 @@ function Personaje(){
 	 	centro.position.z = posicionZ;
 	 
 	 	if(cam_2 || cam_3){
-			
-		
 			
 		scene.add(centro);
 	 	var tx=0, ty= 0, tz=0;				

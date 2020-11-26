@@ -5,8 +5,8 @@ var thetaSum = 0;
 
 function Personaje(){
 	
-	var material1 = new THREE.MeshBasicMaterial( {color: 0xFFC279} );
-	var material2 = new THREE.MeshBasicMaterial( {color: 0x00C1FF} );
+	var material1 = new THREE.MeshStandardMaterial( {color: 0xFFC279} );
+	var material2 = new THREE.MeshStandardMaterial( {color: 0x00C1FF} );
 	
 	var geoCabeza = new THREE.BoxBufferGeometry( 1, 1, 1 );
 	var cabeza = new THREE.Mesh( geoCabeza, material1 );
@@ -69,7 +69,8 @@ function Personaje(){
 	centro.add(centro_Pierna_Izq);
 	centro.add(centro_Brazo_Der);
 	centro.add(centro_Brazo_Izq);
-	//scene.add(centro);		
+	//scene.add(centro);
+			
 
 	var onKeyDown = function ( event ) {
 		switch ( event.keyCode ) {
@@ -127,8 +128,6 @@ function Personaje(){
 	 	centro.position.z = posicionZ;
 	 
 	 	if(cam_2 || cam_3){
-			
-		
 			
 		scene.add(centro);
 	 	var tx=0, ty= 0, tz=0;				

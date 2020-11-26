@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Visualizador de primitivas</title>
+</head>
+<body>
+	<script src="js/three.js"></script>
+	<script src="js/dat.gui.min.js"></script>
+	<script src="js/controls/OrbitControls.js"></script>
+	<script src="Toroide.js"></script>
+	<script src="Escena.js"></script>
+	<script src="js/fontJSON.JSON"></script>
+	<script src="Casa.js"></script>
+	<script src="Cubo.js"></script>
+
+	
+	<script>
+		var scene, aspect, camera, renderer;
+		
+		
+		init();
+		animate();
+		render();
+	
+		function init(){
+			
+			escena();
+         	//toroide();
+			//letras();
+			Cubo();
+			 //EsferaMascara();
+			camera.position.x = 0;
+			camera.position.y = 2;	 
+		  	camera.position.z =  12;			
+		  	camera.lookAt( origin );
+			
+		}
+   
+  function render(){
+	  	//render_Toroide();
+	  	//render_letras();
+	  	render_cubo();
+	  	//Render_Esfera();
+        camera.lookAt( 0, 0, 0 );
+        renderer.render( scene, camera );
+    }
+ function animate() {
+        render();
+		controls.update();
+        requestAnimationFrame( animate );
+    }
+
+	</script>
+</body>
+</html>

@@ -2,7 +2,7 @@ var cam_1 = true, cam_2 = false,cam_3 = false;
 var camera,camera2,camera3;
 var controls,clock;
 var cont = 1; 
-var posicionX , posicionZ ;
+var posicionX = 0, posicionZ = 0;
 var views = [
 				{//Camara 1
 					left:0,
@@ -14,7 +14,7 @@ var views = [
 					up: [ 0, 1, 0 ],
 					fov: 60,
 					updateCamera: function ( camera, scene ) {
-
+					camera.position.y =  3;
 					}
 				},
 				{//Camara 2
@@ -65,7 +65,6 @@ function fondo(){
 
    
 	  scene = new THREE.Scene();
-	  scene.fog = new THREE.Fog(0xffffff, 10, 50);
 	  aspect = window.innerWidth / window.innerHeight;
 	  camera = new THREE.PerspectiveCamera( 45, aspect, 0.1, 1000);
 	  camera2 = new THREE.PerspectiveCamera( 45, aspect, 0.1, 1000);
@@ -111,6 +110,7 @@ function fondo(){
 						cam_1 = true;
 						cam_2 = false;
 						cam_3 = false;
+						console.log(cont);
 						cont++;
 						}
 						else{
@@ -140,7 +140,7 @@ function fondo(){
    var arrowY = new THREE.ArrowHelper( y, origin, arrowSize, colorG );
    var arrowZ = new THREE.ArrowHelper( z, origin, arrowSize, colorB );
 
-	
+	scene.add( gridHelperXZ );
     scene.add( arrowX); 
     scene.add( arrowY );  
     scene.add( arrowZ ); 
@@ -175,11 +175,14 @@ function render_Camera(){
 	camera.aspect = width / height;
 	camera.updateProjectionMatrix();
 	renderer.render( scene, camera );
+	console.log("Posicion x = "+camera.position.x);
+	console.log("Posicion z = "+camera.position.z);
 	posicionX = camera.position.x;
 	posicionZ = camera.position.z;
+	//scene.remove(centro);	
+
 	scene.remove(centro);
 	controls.update(clock.getDelta());
-		
 	}
 	
 	if(cam_2){
@@ -230,11 +233,11 @@ function Luz(){
   var ambient = new THREE.AmbientLight( 0xffffff, 1 );
    scene.add( ambient );
 			
-   /*var pointLight = new THREE.PointLight( 0xffffff, 1, 100 );
+   var pointLight = new THREE.PointLight( 0xffffff, 1, 100 );
    pointLight.position.set( -5, 1, 5 );
    scene.add( pointLight );
 			
    var pointLight = new THREE.PointLight( 0xffffff, .5, 100 );
    pointLight.position.set( 5, 1, -5 );
-   scene.add( pointLight );*/
+   scene.add( pointLight );
 }
